@@ -3,11 +3,11 @@ Localnet.Farm
 
 A place for your hosted Filecoin Lotus localnets!
 
-** Under Construction! **
+**Under Construction!**
 
 ## Contact Info
 
-Send a mesage to "@Jim Pick" on the Filecoin Slack for more info.
+Send a message to `@Jim Pick` on the Filecoin Slack for more info.
 
 ## License
 
