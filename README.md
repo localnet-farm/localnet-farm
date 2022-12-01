@@ -21,6 +21,12 @@ The "Localnet.Farm" project will take these images, and deploy them on AWS, so m
 
 * https://www.starmaps.app/roadmap/github.com/jimpick/localnet-farm/issues/4
 
+## Prototypes
+
+A series of cluster setups can be found in the prototypes directory. As newer clusters are deployed to support newer milestones, older cluster instances will be sunsetted.
+
+* https://github.com/jimpick/localnet-farm/tree/main/prototypes
+
 ## Contact Info
 
 Send a message to `@Jim Pick` on the Filecoin Slack for more info.

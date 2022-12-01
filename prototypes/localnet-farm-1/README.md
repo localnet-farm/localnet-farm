@@ -20,7 +20,11 @@ This prototype cluster is hand-built on AWS, and runs a single localnet workload
 * https://github.com/jimpick/lotus-fvm-localnet
 * https://github.com/jimpick/localnet-farm-gateway
 
-# Manual install
+# Kubernetes Resources / ArgoCD
+
+* https://github.com/jimpick/localnet-farm/tree/main/prototypes/localnet-farm-1/argocd
+
+# Cluster Manual install
 
 * https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
   * /Users/jim/fvm-jpimac/localnet-farm/aws-tutorial
@@ -111,3 +115,10 @@ This prototype cluster is hand-built on AWS, and runs a single localnet workload
       ```
 
   * `kubectl get deployment -n kube-system aws-load-balancer-controller`
+
+  * Deploy kubernetes resources (see above) using ArgoCD
+
+  * Endpoint:
+    * Setup domain in Route53 (localnet.farm)
+    * Use AWS Certificate Manager (ACM) to acquire certificate for gw-1.localnet.farm (DNS validation method, create temp records)
+    * Map endpoint in Route 53 using a CNAME (could possibly use an A record) and an alias to the load balancer
