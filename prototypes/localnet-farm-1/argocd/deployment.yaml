@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-localnet-lotus-fvm
+  labels:
+    app: test-localnet-lotus-fvm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-localnet-lotus-fvm
+  template:
+    metadata:
+      labels:
+        app: test-localnet-lotus-fvm
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      containers:
+      - name: gateway
+        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
+        command: [ bash, -c ]
+        args:
+          - |
+            caddy start --config /etc/caddy/Caddyfile
+            node server.mjs
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: node
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:99213b57efe846c1251053c61ae71ec498b6121dc2ce5f203220ba659279454d
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+      - name: miner-1
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:99213b57efe846c1251053c61ae71ec498b6121dc2ce5f203220ba659279454d
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            lotus-miner run --nosync
+        env:
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+      - name: miner-2
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:99213b57efe846c1251053c61ae71ec498b6121dc2ce5f203220ba659279454d
+        command: [ bash, -c ]
+        args:
+          - |
+            lotus wait-api
+            mkdir ~/.lotus-miner-local-net-2
+            export OWNER=$(lotus wallet default)
+            echo Owner: $OWNER
+            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
+            #while true; do sleep 50; done
+            lotus-miner init --owner $OWNER --nosync
+            lotus-miner run --nosync --miner-api 2346
+        env:
+          - name: LOTUS_MINER_PATH
+            value: ~/.lotus-miner-local-net-2
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+      - name: miner-3
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:99213b57efe846c1251053c61ae71ec498b6121dc2ce5f203220ba659279454d
+        command: [ bash, -c ]
+        args:
+          - |
+            lotus wait-api
+            mkdir ~/.lotus-miner-local-net-3
+            export OWNER=$(lotus wallet default)
+            echo Owner: $OWNER
+            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
+            #while true; do sleep 50; done
+            lotus-miner init --owner $OWNER --nosync
+            lotus-miner run --nosync --miner-api 2347
+        env:
+          - name: LOTUS_MINER_PATH
+            value: ~/.lotus-miner-local-net-3
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
