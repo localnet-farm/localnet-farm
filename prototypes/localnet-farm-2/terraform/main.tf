@@ -22,7 +22,7 @@ locals {
   region          = "us-west-2"
 
   tags = {
-    Example    = local.name
+    lf-cluster = local.name
     GithubRepo = "localnet-farm"
     GithubOrg  = "jimpick"
   }
@@ -59,28 +59,19 @@ module "eks" {
   create_node_security_group    = false
 
   fargate_profiles = {
-    example = {
-      name = "example"
+    default = {
+      name = "default"
       selectors = [
-        {
-          namespace = "backend"
-          labels = {
-            Application = "backend"
-          }
-        },
-        {
-          namespace = "app-*"
-          labels = {
-            Application = "app-wildcard"
-          }
-        }
+        { namespace = "default" }
       ]
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
       subnet_ids = [module.vpc.private_subnets[1]]
 
       tags = {
-        Owner = "secondary"
+	lf-cluster = local.name
+	GithubRepo = "localnet-farm"
+	GithubOrg  = "jimpick"
       }
 
       timeouts = {
@@ -91,9 +82,16 @@ module "eks" {
 
     kube_system = {
       name = "kube-system"
+
       selectors = [
         { namespace = "kube-system" }
       ]
+
+      tags = {
+	lf-cluster = local.name
+	GithubRepo = "localnet-farm"
+	GithubOrg  = "jimpick"
+      }
     }
   }
 
