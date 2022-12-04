@@ -17,14 +17,14 @@ provider "helm" {
 }
 
 locals {
-  name            = "ex-${replace(basename(path.cwd), "_", "-")}"
+  name            = "localnet-farm-2"
   cluster_version = "1.22"
   region          = "us-west-2"
 
   tags = {
     Example    = local.name
-    GithubRepo = "terraform-aws-eks"
-    GithubOrg  = "terraform-aws-modules"
+    GithubRepo = "localnet-farm"
+    GithubOrg  = "jimpick"
   }
 }
 
