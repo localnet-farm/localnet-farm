@@ -344,7 +344,7 @@ resource "helm_release" "lb" {
 
   set {
     name  = "vpcId"
-    value = var.vpc_id
+    value = module.vpc.vpc_id
   }
 
   set {
@@ -364,6 +364,6 @@ resource "helm_release" "lb" {
 
   set {
     name  = "clusterName"
-    value = var.eks_name
+    value = local.name
   }
 }
