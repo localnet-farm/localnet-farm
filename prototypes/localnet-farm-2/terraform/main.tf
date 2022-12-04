@@ -40,6 +40,7 @@ module "eks" {
   cluster_version                 = local.cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+  cluster_additional_security_group_ids = [aws_security_group.eks.id]
 
   cluster_addons = {
     kube-proxy = {}
@@ -69,9 +70,9 @@ module "eks" {
       subnet_ids = [module.vpc.private_subnets[1]]
 
       tags = {
-	lf-cluster = local.name
-	GithubRepo = "localnet-farm"
-	GithubOrg  = "jimpick"
+				lf-cluster = local.name
+				GithubRepo = "localnet-farm"
+				GithubOrg  = "jimpick"
       }
 
       timeouts = {
@@ -88,9 +89,9 @@ module "eks" {
       ]
 
       tags = {
-	lf-cluster = local.name
-	GithubRepo = "localnet-farm"
-	GithubOrg  = "jimpick"
+				lf-cluster = local.name
+				GithubRepo = "localnet-farm"
+				GithubOrg  = "jimpick"
       }
     }
   }
@@ -265,4 +266,104 @@ resource "aws_kms_key" "eks" {
   enable_key_rotation     = true
 
   tags = local.tags
+}
+
+# Load balancer
+# https://andrewtarry.com/posts/terraform-eks-alb-setup/
+
+resource "aws_security_group" "eks" {
+	name        = "${var.env_name} eks cluster"
+	description = "Allow traffic"
+	vpc_id      = var.vpc_id
+
+	ingress {
+		description      = "World"
+		from_port        = 0
+		to_port          = 0
+		protocol         = "-1"
+		cidr_blocks      = ["0.0.0.0/0"]
+		ipv6_cidr_blocks = ["::/0"]
+	}
+
+	egress {
+		from_port        = 0
+		to_port          = 0
+		protocol         = "-1"
+		cidr_blocks      = ["0.0.0.0/0"]
+		ipv6_cidr_blocks = ["::/0"]
+	}
+
+	tags = merge({
+		Name = "EKS ${var.env_name}",
+		"kubernetes.io/cluster/${local.eks_name}": "owned"
+	}, var.tags)
+}
+
+module "lb_role" {
+  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+
+  role_name = "${var.env_name}_eks_lb"
+  attach_load_balancer_controller_policy = true
+
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
+    }
+  }
+}
+
+resource "kubernetes_service_account" "service-account" {
+  metadata {
+    name = "aws-load-balancer-controller"
+    namespace = "kube-system"
+    labels = {
+        "app.kubernetes.io/name"= "aws-load-balancer-controller"
+        "app.kubernetes.io/component"= "controller"
+    }
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.lb_role.arn
+      "eks.amazonaws.com/sts-regional-endpoints" = "true"
+    }
+  }
+}
+
+resource "helm_release" "lb" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  depends_on = [
+    kubernetes_service_account.service-account
+  ]
+
+  set {
+    name  = "region"
+    value = local.region
+  }
+
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
+  }
+
+  set {
+    name  = "image.repository"
+    value = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "clusterName"
+    value = var.eks_name
+  }
 }
