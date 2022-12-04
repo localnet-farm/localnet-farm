@@ -18,7 +18,7 @@ provider "helm" {
 
 locals {
   name            = "localnet-farm-2"
-  cluster_version = "1.22"
+  cluster_version = "1.23"
   region          = "us-west-2"
 
   tags = {
