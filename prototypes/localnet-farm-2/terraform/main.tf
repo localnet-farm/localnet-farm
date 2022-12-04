@@ -62,7 +62,7 @@ module "eks" {
   fargate_profiles = {
     default = {
       name = "default"
-      selectors = [
+        selectors = [
         { namespace = "default" }
       ]
 
@@ -70,9 +70,9 @@ module "eks" {
       subnet_ids = [module.vpc.private_subnets[1]]
 
       tags = {
-				lf-cluster = local.name
-				GithubRepo = "localnet-farm"
-				GithubOrg  = "jimpick"
+        lf-cluster = local.name
+        GithubRepo = "localnet-farm"
+        GithubOrg  = "jimpick"
       }
 
       timeouts = {
@@ -89,9 +89,9 @@ module "eks" {
       ]
 
       tags = {
-				lf-cluster = local.name
-				GithubRepo = "localnet-farm"
-				GithubOrg  = "jimpick"
+        lf-cluster = local.name
+        GithubRepo = "localnet-farm"
+        GithubOrg  = "jimpick"
       }
     }
   }
@@ -272,37 +272,37 @@ resource "aws_kms_key" "eks" {
 # https://andrewtarry.com/posts/terraform-eks-alb-setup/
 
 resource "aws_security_group" "eks" {
-	name        = "${var.env_name} eks cluster"
-	description = "Allow traffic"
-	vpc_id      = var.vpc_id
+  name        = "${local.name} eks cluster"
+  description = "Allow traffic"
+  vpc_id      = module.vpc.vpc_id
 
-	ingress {
-		description      = "World"
-		from_port        = 0
-		to_port          = 0
-		protocol         = "-1"
-		cidr_blocks      = ["0.0.0.0/0"]
-		ipv6_cidr_blocks = ["::/0"]
-	}
+  ingress {
+    description      = "World"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
-	egress {
-		from_port        = 0
-		to_port          = 0
-		protocol         = "-1"
-		cidr_blocks      = ["0.0.0.0/0"]
-		ipv6_cidr_blocks = ["::/0"]
-	}
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
-	tags = merge({
-		Name = "EKS ${var.env_name}",
-		"kubernetes.io/cluster/${local.eks_name}": "owned"
-	}, var.tags)
+  #tags = merge({
+  #       Name = "EKS ${local.name}",
+  #       "kubernetes.io/cluster/${local.eks_name}": "owned"
+  #}, var.tags)
 }
 
 module "lb_role" {
   source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name = "${var.env_name}_eks_lb"
+  role_name = "${local.name}_eks_lb"
   attach_load_balancer_controller_policy = true
 
   oidc_providers = {
