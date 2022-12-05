@@ -40,6 +40,7 @@ module "eks" {
   cluster_version                 = local.cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+  cluster_additional_security_group_ids = [aws_security_group.eks.id]
 
   cluster_addons = {
     kube-proxy = {}
@@ -266,3 +267,36 @@ resource "aws_kms_key" "eks" {
 
   tags = local.tags
 }
+
+# Load balancer
+# https://andrewtarry.com/posts/terraform-eks-alb-setup/
+
+resource "aws_security_group" "eks" {
+  name        = "${local.name} eks cluster"
+  description = "Allow traffic"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    description      = "World"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  #tags = merge({
+  #       Name = "EKS ${local.name}",
+  #       "kubernetes.io/cluster/${local.eks_name}": "owned"
+  #}, var.tags)
+}
+
+
