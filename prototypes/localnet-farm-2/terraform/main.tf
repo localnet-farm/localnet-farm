@@ -40,7 +40,7 @@ module "eks" {
   cluster_version                 = local.cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
-  cluster_additional_security_group_ids = [aws_security_group.eks.id]
+  #cluster_additional_security_group_ids = [aws_security_group.eks.id]
 
   cluster_addons = {
     kube-proxy = {}
