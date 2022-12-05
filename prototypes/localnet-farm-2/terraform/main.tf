@@ -215,7 +215,7 @@ resource "helm_release" "coredns" {
           eks.amazonaws.com/compute-type: fargate
       podAnnotations:
         eks.amazonaws.com/compute-type: fargate
-      EOT
+    EOT
   ]
 
   depends_on = [
