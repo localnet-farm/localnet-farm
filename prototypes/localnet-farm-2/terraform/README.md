@@ -1,6 +1,7 @@
 # AWS EKS Cluster with Fargate profiles
 
-Original URL: https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/examples/fargate_profile
+* Original URL: https://github.com/terraform-aws-modules/terraform-aws-eks/tree/master/examples/fargate_profile
+* Load Balancer Setup: https://andrewtarry.com/posts/terraform-eks-alb-setup/
 
 Configuration in this directory creates an AWS EKS cluster utilizing Fargate profiles.
 
