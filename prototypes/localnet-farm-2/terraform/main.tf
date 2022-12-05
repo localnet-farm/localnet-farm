@@ -203,7 +203,7 @@ resource "helm_release" "coredns" {
   values = [
     <<-EOT
       image:
-        repository: 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/coredns
+        repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/coredns
         tag: ${data.aws_eks_addon_version.this["coredns"].version}
       deployment:
         name: coredns
@@ -338,4 +338,43 @@ resource "kubernetes_service_account" "service-account" {
   }
 }
 
+resource "helm_release" "lb" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  depends_on = [
+    kubernetes_service_account.service-account
+  ]
+
+  set {
+    name  = "region"
+    value = local.region
+  }
+
+  set {
+    name  = "vpcId"
+    value = module.vpc.vpc_id
+  }
+
+  set {
+    name  = "image.repository"
+    value = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "clusterName"
+    value = local.name
+  }
+}
 
