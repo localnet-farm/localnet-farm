@@ -1,6 +1,6 @@
 #! /bin/bash
 
-URL=https://gw-1.localnet.farm
+URL=https://gw-3.localnet.farm
 
 set -x
 curl -v -X POST   -H "Content-Type: application/json"   --data '{ 
