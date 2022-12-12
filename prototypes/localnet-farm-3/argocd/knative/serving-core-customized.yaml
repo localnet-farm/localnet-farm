@@ -5815,6 +5815,15 @@ spec:
         app.kubernetes.io/version: "1.8.3"
     spec:
       serviceAccountName: controller
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       containers:
         - name: activator
           # This is the Go import path for the binary that is containerized
