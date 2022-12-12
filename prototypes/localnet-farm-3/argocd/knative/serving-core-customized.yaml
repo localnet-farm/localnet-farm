@@ -6759,7 +6759,18 @@ webhooks:
       - apiGroups:
           - serving.knative.dev
         apiVersions:
-          - "*"
+          - v1alpha1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - domainmappings
+          - domainmappings/status
+        scope: '*'
+      - apiGroups:
+          - serving.knative.dev
+        apiVersions:
+          - v1beta1
         operations:
           - CREATE
           - UPDATE
@@ -6767,7 +6778,6 @@ webhooks:
         resources:
           - domainmappings
           - domainmappings/status
-
 ---
 # Copyright 2020 The Knative Authors
 #
