@@ -5836,8 +5836,8 @@ spec:
               cpu: 300m
               memory: 60Mi
             limits:
-              cpu: 1000m
-              memory: 600Mi
+              cpu: 300m
+              memory: 60Mi
           env:
             # Run Activator with GC collection when newly generated memory is 500%.
             - name: GOGC
