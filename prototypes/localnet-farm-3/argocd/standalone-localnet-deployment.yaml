@@ -5,7 +5,7 @@ metadata:
   labels:
     app: test-localnet-lotus-fvm
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: test-localnet-lotus-fvm
