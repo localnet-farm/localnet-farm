@@ -6232,14 +6232,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: domain-mapping
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       serviceAccountName: controller
       containers:
         - name: domain-mapping
@@ -6251,8 +6251,8 @@ spec:
               cpu: 30m
               memory: 40Mi
             limits:
-              cpu: 300m
-              memory: 400Mi
+              cpu: 30m
+              memory: 40Mi
           env:
             - name: SYSTEM_NAMESPACE
               valueFrom:
@@ -6322,14 +6322,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: domainmapping-webhook
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       serviceAccountName: controller
       containers:
         - name: domainmapping-webhook
@@ -6341,8 +6341,8 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 100m
+              memory: 100Mi
           env:
             - name: POD_NAME
               valueFrom:
@@ -6521,14 +6521,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: webhook
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       serviceAccountName: controller
       containers:
         - name: webhook
@@ -6540,8 +6540,8 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 100m
+              memory: 100Mi
           env:
             - name: POD_NAME
               valueFrom:
