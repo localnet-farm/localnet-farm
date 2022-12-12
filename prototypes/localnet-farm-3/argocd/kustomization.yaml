@@ -2,6 +2,6 @@ resources:
 - standalone-localnet-deployment.yaml
 - standalone-localnet-service.yaml
 - knative/serving-core-customized.yaml
-- knative/github.com/knative/net-kourier/releases/download/knative-v1.8.1/kourier.yaml
+- knative/kourier-customized.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
