@@ -2,6 +2,5 @@ resources:
 - standalone-localnet-deployment.yaml
 - standalone-localnet-service.yaml
 - knative/github.com/knative/serving/releases/download/knative-v1.8.3/serving-crds.yaml
-- knative/github.com/knative/serving/releases/download/knative-v1.8.3/serving-core.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
