@@ -4953,6 +4953,9 @@ metadata:
   annotations:
     knative.dev/example-checksum: "691a192e"
 data:
+  kubernetes.podspec-affinity: "enabled"
+  kubernetes.podspec-persistent-volume-claim: "enabled"
+  kubernetes.podspec-persistent-volume-write: "enabled"
   _example: |-
     ################################
     #                              #
