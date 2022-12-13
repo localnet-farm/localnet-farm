@@ -4886,6 +4886,8 @@ metadata:
   annotations:
     knative.dev/example-checksum: "26c09de5"
 data:
+  cluster-3.localnet.farm: |
+
   _example: |
     ################################
     #                              #
