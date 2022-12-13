@@ -531,6 +531,7 @@ metadata:
     app.kubernetes.io/component: net-kourier
     app.kubernetes.io/version: "1.8.1"
     app.kubernetes.io/name: knative-serving
+  annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
