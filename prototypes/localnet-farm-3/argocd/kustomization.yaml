@@ -1,7 +1,8 @@
 resources:
-- standalone-localnet-deployment.yaml
-- standalone-localnet-service.yaml
+#- standalone-localnet-deployment.yaml
+#- standalone-localnet-service.yaml
 - knative/serving-core-customized.yaml
 - knative/kourier-customized.yaml
+- workloads/hello.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
