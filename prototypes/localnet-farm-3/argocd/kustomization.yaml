@@ -4,5 +4,6 @@ resources:
 - knative/serving-core-customized.yaml
 - knative/kourier-customized.yaml
 - workloads/hello.yaml
+- workloads/jimpick/fvm-sapphire-patch-1.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
