@@ -73,7 +73,7 @@ module "eks" {
 		admin = {
 			name = "node-group-admin"
 
-			instance_types = ["c6g.2xlarge"]
+			instance_types = ["c6a.2xlarge"]
 
 			min_size     = 1
 			max_size     = 1
