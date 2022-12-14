@@ -91,65 +91,9 @@ module "eks" {
       subnet_ids = [module.vpc.private_subnets[1]]
 
       tags = {
-	lf-cluster = local.name
-	GithubRepo = "localnet-farm"
-	GithubOrg  = "jimpick"
-      }
-
-      timeouts = {
-        create = "20m"
-        delete = "20m"
-      }
-    }
-
-    kube_system = {
-      name = "kube-system"
-
-      selectors = [
-        { namespace = "kube-system" }
-      ]
-
-      tags = {
-	lf-cluster = local.name
-	GithubRepo = "localnet-farm"
-	GithubOrg  = "jimpick"
-      }
-    }
-
-    knative_serving = {
-      name = "knative-serving"
-      selectors = [
-        { namespace = "knative-serving" }
-      ]
-
-      # Using specific subnets instead of the subnets supplied for the cluster itself
-      subnet_ids = [module.vpc.private_subnets[1]]
-
-      tags = {
-	lf-cluster = local.name
-	GithubRepo = "localnet-farm"
-	GithubOrg  = "jimpick"
-      }
-
-      timeouts = {
-        create = "20m"
-        delete = "20m"
-      }
-    }
-
-    kourier_system = {
-      name = "kourier-system"
-      selectors = [
-        { namespace = "kourier-system" }
-      ]
-
-      # Using specific subnets instead of the subnets supplied for the cluster itself
-      subnet_ids = [module.vpc.private_subnets[1]]
-
-      tags = {
-	lf-cluster = local.name
-	GithubRepo = "localnet-farm"
-	GithubOrg  = "jimpick"
+				lf-cluster = local.name
+				GithubRepo = "localnet-farm"
+				GithubOrg  = "jimpick"
       }
 
       timeouts = {
