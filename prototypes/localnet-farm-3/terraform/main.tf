@@ -60,7 +60,8 @@ module "eks" {
   #create_node_security_group    = false
 
 	eks_managed_node_group_defaults = {
-		ami_type = "AL2_x86_64"
+		#ami_type = "AL2_x86_64"
+		ami_type = "BOTTLEROCKET_x86_64"
 
 		attach_cluster_primary_security_group = true
 
@@ -72,7 +73,7 @@ module "eks" {
 		admin = {
 			name = "node-group-admin"
 
-			instance_types = ["t3.medium"]
+			instance_types = ["c6g.2xlarge"]
 
 			min_size     = 1
 			max_size     = 1
