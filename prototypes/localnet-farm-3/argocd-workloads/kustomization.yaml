@@ -1,4 +1,5 @@
 resources:
+- namespace-quick.yaml
 - hello.yaml
 - hello-quick.yaml
 - jimpick/fvm-sapphire-patch-1.yaml
