@@ -102,20 +102,21 @@ module "eks" {
       }
     }
 
-   kourier_system = {
-     name = "kourier-system"
-     selectors = [
-       { namespace = "kourier-system" }
-     ]
+    kourier_system = {
+      name = "kourier-system"
+      selectors = [
+        { namespace = "kourier-system" }
+      ]
 
-     # Using specific subnets instead of the subnets supplied for the cluster itself
-     subnet_ids = [module.vpc.private_subnets[1]]
+      # Using specific subnets instead of the subnets supplied for the cluster itself
+      subnet_ids = [module.vpc.private_subnets[1]]
 
-     tags = {
-				lf-cluster = local.name
-				GithubRepo = "localnet-farm"
-				GithubOrg  = "jimpick"
-     }
+      tags = {
+        lf-cluster = local.name
+        GithubRepo = "localnet-farm"
+        GithubOrg  = "jimpick"
+      }
+    }
   }
 
   tags = local.tags
