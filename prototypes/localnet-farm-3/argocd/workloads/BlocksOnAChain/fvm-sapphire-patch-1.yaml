@@ -32,10 +32,10 @@ spec:
         resources:
           requests:
             memory: "256Mi"
-            cpu: "200m"
+            cpu: "500m"
           limits:
             memory: "256Mi"
-            cpu: "200m"
+            cpu: "500m"
       - name: node
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:9d6ecc137bcc513e2a8af3161dcd3ef506b705b4bb9ff6f9cdff98337a459612
         command: [ bash, -c ]
@@ -47,10 +47,10 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "200m"
+            cpu: "500m"
           limits:
             memory: "2Gi"
-            cpu: "200m"
+            cpu: "500m"
       - name: miner-1
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:9d6ecc137bcc513e2a8af3161dcd3ef506b705b4bb9ff6f9cdff98337a459612
         command: [ bash, -c ]
@@ -64,7 +64,7 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "200m"
+            cpu: "500m"
           limits:
             memory: "2Gi"
-            cpu: "200m"
+            cpu: "500m"
