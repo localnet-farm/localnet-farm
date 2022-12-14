@@ -56,8 +56,29 @@ module "eks" {
   subnet_ids = module.vpc.private_subnets
 
   # Fargate profiles use the cluster primary security group so these are not utilized
-  create_cluster_security_group = false
-  create_node_security_group    = false
+  #create_cluster_security_group = false
+  #create_node_security_group    = false
+
+	eks_managed_node_group_defaults = {
+		ami_type = "AL2_x86_64"
+
+		attach_cluster_primary_security_group = true
+
+		# Disabling and using externally provided security groups
+		#create_security_group = false
+	}
+
+	eks_managed_node_groups = {
+		admin = {
+			name = "node-group-admin"
+
+			instance_types = ["t3.medium"]
+
+			min_size     = 1
+			max_size     = 1
+			desired_size = 1
+		}
+	}
 
   fargate_profiles = {
     default = {
