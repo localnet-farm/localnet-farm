@@ -536,7 +536,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:898544381806:certificate/a1195ff7-4ab3-48b7-855a-184e1c890b93
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:898544381806:certificate/a844baad-e1f2-4a61-b246-f6640ab68f61
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   ports:
