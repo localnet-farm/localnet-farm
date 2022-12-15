@@ -1,0 +1,176 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>Localnet.Farm</title>
+    <style>
+      /* The bare minimum English subset, plus copyright & arrows (← ↑ → ↓) & quotes (“ ” ‘ ’) & bullet (•) */
+      @font-face {
+        font-family: 'Recursive';
+        font-style: oblique 0deg 15deg;
+        font-weight: 300 1000;
+        font-display: block;
+        src: url('/fonts/Recursive_VF_1.062--subset_range_english_basic.woff2')
+          format('woff2');
+        unicode-range: U+0020-007F, U+00A9, U+2190-2193, U+2018, U+2019, U+201C,
+          U+201D, U+2022;
+      }
+
+      body {
+        color: white;
+        font-family: Recursive;
+      }
+
+      h1 {
+        font-family: Recursive;
+        font-size: 10vw;
+        font-variation-settings: 'MONO' 0, 'CASL' 0.4, 'slnt' -30, 'CRSV' 0,
+          'wght' 1000;
+        color: #fff;
+      }
+
+      a:link, a:visited {
+        color: #ffeb3b;
+      }
+
+      .grid {
+        display: grid;
+      }
+
+      .grid > * {
+        justify-self: center;
+      }
+
+      .bg {
+        position: absolute;
+        z-index: -1;
+        overflow: hidden;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      /* https://codepen.io/gpyne/pen/iElhp */
+      .bg *,
+      .bg *::before,
+      .bg *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .darkscreen {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: hsl(116deg 48% 16% / 57%);
+      }
+      .honeycomb {
+        position: absolute;
+        margin: 0 auto;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        width: 200%;
+        margin: -70px;
+        z-index: -3;
+      }
+      .pair {
+        /* inline-block whitespace fix */
+        font-size: 0;
+      }
+
+      .hexagon {
+        position: relative;
+        display: inline-block;
+        /* left/right margin approx. 25% of .hexagon width + spacing */
+        margin: 2px 18px;
+        background-color: hsl(112deg 100% 44%);
+        text-align: center;
+      }
+      .hexagon,
+      .hexagon::before,
+      .hexagon::after {
+        /* easy way: height is width * 1.732
+        actual formula is 2*(width/(2*Math.tan(Math.PI/6)))
+        remove border-radius for sharp corners on hexagons */
+        width: 67px;
+        height: 116px;
+        /* border-radius: 20%/5%; */
+      }
+      .hexagon::before {
+        background-color: inherit;
+        content: '';
+        position: absolute;
+        left: 0;
+        transform: rotate(-60deg);
+      }
+      .hexagon::after {
+        background-color: inherit;
+        content: '';
+        position: absolute;
+        left: 0;
+        transform: rotate(60deg);
+      }
+      .hexagon:nth-child(even) {
+        /* top approx. 50% of .hexagon height + spacing */
+        top: 59px;
+      }
+      .hexagontent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 140%;
+        font-size: 4rem;
+        line-height: 1.2;
+        z-index: 100;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <h1 style="grid-row: 1">Localnet.Farm</h1>
+      <p style="grid-row: 2; font-size: 150%; text-align: center; color: #21f36c; border: black 5px solid; border-radius: 1rem; background: black; padding: 1rem;">
+        "On-demand localnets in the cloud"
+      </p>
+      <p style="grid-row: 3; font-size: 150%; text-align: center">
+      <a href="https://github.com/jimpick/localnet-farm">github.com/jimpick/localnet-farm</a>
+      </p>
+    </div>
+    <div class="bg">
+      <div class="darkscreen"></div>
+      <div class="honeycomb"></div>
+    </div>
+    <script>
+      let emojis =
+        '🧑‍🌾 👩‍🌾 🚜 🐔 🐄 🐑 🐐 🐖 🌾'
+      emojis = emojis.split(' ')
+      console.log('Emojis', emojis)
+      const honeycombEl = document.querySelector('.honeycomb')
+      for (let i = 0; i < 1000; i += 2) {
+        const pairEl = document.createElement('div')
+        pairEl.className = 'pair'
+        addHex(pairEl)
+        addHex(pairEl)
+        honeycombEl.appendChild(pairEl)
+      }
+
+      function addHex (pairEl) {
+        const hexEl = document.createElement('div')
+        hexEl.className = 'hexagon'
+        const contentEl = document.createElement('div')
+        contentEl.className = 'hexagontent'
+        const index = Math.floor(Math.random() * emojis.length)
+        contentEl.textContent = emojis[index]
+        hexEl.appendChild(contentEl)
+        pairEl.appendChild(hexEl)
+      }
+    </script>
+  </body>
+</html>
