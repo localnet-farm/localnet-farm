@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: jimpick-fvm-sapphire-patch-1
+  name: jimpick-fvm-carbonado-1
   namespace: default
 spec:
   template:
