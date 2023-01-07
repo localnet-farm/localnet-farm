@@ -2,6 +2,7 @@ resources:
 - namespace-quick.yaml
 - hello.yaml
 - hello-quick.yaml
+- shared/fvm-carbonado-1-p1-quick.yaml
 - jimpick/fvm-sapphire-patch-1.yaml
 - jimpick/fvm-sapphire-patch-1-quick.yaml
 - jimpick/fvm-carbonado-1.yaml
