@@ -37,7 +37,7 @@ spec:
             memory: "256Mi"
             cpu: "500m"
       - name: node
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:43893cf360a71b4e413a80709aa614fd1a309048d3664fbc4c25a0f36e4ab912
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:2a04fc423ab88bd5d43e62f1288c4b7d643144d2b2bf371d132cec047dcf5f54
         command: [ bash, -c ]
         args:
           - |
@@ -52,7 +52,7 @@ spec:
             memory: "2Gi"
             cpu: "500m"
       - name: miner-1
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:43893cf360a71b4e413a80709aa614fd1a309048d3664fbc4c25a0f36e4ab912
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:2a04fc423ab88bd5d43e62f1288c4b7d643144d2b2bf371d132cec047dcf5f54
         command: [ bash, -c ]
         args:
           - |
