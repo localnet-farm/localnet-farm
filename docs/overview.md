@@ -212,21 +212,21 @@ This particular localnet is intended for "shared" usage. It is built against a s
 
 The Kubernetes resource that configures the Docker images is here:
 
-* https://github.com/jimpick/localnet-farm/blob/main/prototypes/localnet-farm-3/argocd-workloads/shared/fvm-carbonado-1-p1-quick.yaml
+* https://github.com/jimpick/localnet-farm/blob/main/prototypes/localnet-farm-3/argocd-workloads/shared/fvm-carbonado-jan-9-quick.yaml
 
 This YAML file gets loaded into the Kubernetes cluster we have set up on AWS named "localnet-farm-3".
 
 Because it describes a Knative service, when it is loaded, an https endpoint will appear at:
 
-* https://shared-fvm-carbonado-1-p1.quick.cluster-3.localnet.farm
+* https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm
 
-The endpoint is named after the service name in the resource file ("shared-fvm-carbonado-1-p1") and the namespace ("quick").
+The endpoint is named after the service name in the resource file ("shared-fvm-carbonado-jan-9") and the namespace ("quick").
 
 We are using naming conventions to identify and organize all the endpoints.
 
 The "shared-" part of the name means that this particular endpoint is a public endpoint that multiple developers can share. If instead a developer or team needs an isolated localnet instance, it might be referred to using a unique identifier, like their GitHub account name, eg. "jimpick-".
 
-The "-fvm-carbonado-1-p1" part of the name refers to a specific set of Docker images. In this case, these images were build with pre-release FVM support from the Carbonado.1 Patch 1 release tag. Endpoints that include a particular release name can be kept around for a long time, which is useful for things like demos that you don't want to break when new releases come out.
+The "-fvm-carbonado-jan-9" part of the name refers to a specific set of Docker images. In this case, these images were build with pre-release FVM support from the Carbonado.1 Patch 1 release tag. Endpoints that include a particular release name can be kept around for a long time, which is useful for things like demos that you don't want to break when new releases come out.
 
 Alternatively, an endpoint could be created with a generic release name, eg. "-fvm-latest". Any applications using that endpoint would automatically connect to the latest code deployed there.
 
@@ -254,7 +254,7 @@ The Lotus node [JSON-RPC API](https://lotus.filecoin.io/reference/basics/overvie
 curl -X POST \
      -H "Content-Type: application/json" \
      --data '{ "jsonrpc": "2.0", "method": "Filecoin.ChainHead", "params": [], "id": 1 }' \
-     'https://shared-fvm-carbonado-1-p1.quick.cluster-3.localnet.farm/rpc/v0'
+     'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0'
 ```
 
 Example output:
@@ -271,7 +271,7 @@ accessing the Lotus wallet API so funds can be transferred out of the
 genesis address.
 
 ```
-$ curl https://shared-fvm-carbonado-1-p1.quick.cluster-3.localnet.farm/token; echo
+$ curl https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/token; echo
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.9icsCJ4GhHF_HCwrJxetiDgeNrfMhW_gkcIvIUo5dGc
 ```
 
