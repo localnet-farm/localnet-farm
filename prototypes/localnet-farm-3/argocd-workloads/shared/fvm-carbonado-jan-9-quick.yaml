@@ -1,0 +1,70 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: shared-fvm-carbonado-jan-9
+  namespace: quick
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "3m"
+    spec:
+      containerConcurrency: 0
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      containers:
+      - name: gateway
+        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
+        command: [ bash, -c ]
+        args:
+          - |
+            caddy start --config /etc/caddy/Caddyfile
+            node server.mjs
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      - name: node
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:43893cf360a71b4e413a80709aa614fd1a309048d3664fbc4c25a0f36e4ab912
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+      - name: miner-1
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:43893cf360a71b4e413a80709aa614fd1a309048d3664fbc4c25a0f36e4ab912
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            lotus-miner run --nosync
+        env:
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
