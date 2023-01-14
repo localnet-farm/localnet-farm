@@ -360,55 +360,76 @@ Next, we'll create the `hello_foundry` project following the tutorial:
 
 * https://book.getfoundry.sh/getting-started/first-steps
 
+Here are the commands from the tutorial:
+
 ```
-$ forge init hello_foundry
-$ cd hello_foundry
-$ forge build
-$ forge test
+forge init hello_foundry
+cd hello_foundry
+forge build
+forge test
 ```
 
 If that went well, we'll have a simple smart contract ready to deploy to the localnet.
 
 In order to deploy it, we'll need a private key for an Ethereum address. Initially, when the localnet starts up, there is only an address for the "genesis actor" with funds.
 
-We can generate an Ethereum private key using the [filecoin-address-tool](https://github.com/jimpick/filecoin-address-tool) utility (needs Node.js):
+We can generate an Ethereum private key using the [filecoin-address-tool](https://github.com/jimpick/filecoin-address-tool) utility (needs Node.js). We'll store it in the PRIVATE_KEY environment variable:
 
 ```
-$ PRIVATE_KEY=$(npx filecoin-address-tool generate-random-eth-private-key)
+PRIVATE_KEY=$(npx filecoin-address-tool generate-random-eth-private-key)
+```
+
+Example output:
+
+```
 $ echo $PRIVATE_KEY
 ecec429285d98762180b17ac2750f2ee688ee88c3dd700072576aca6d7414b64
 ```
 
-We'll need to transfer funds to it. First, let's get the associated Ethereum address for our private key:
+We'll need to transfer funds to it. First, let's get the associated Ethereum address for our private key, and store it in the ETH_ADDRESS environment variable:
 
 ```
-$ ETH_ADDRESS=$(npx filecoin-address-tool eth-address-from-eth-private-key $PRIVATE_KEY)
+ETH_ADDRESS=$(npx filecoin-address-tool eth-address-from-eth-private-key $PRIVATE_KEY)
+```
+
+Example output:
+
+```
 $ echo $ETH_ADDRESS
 B746aDF01c73C6cd333590b346214B872ec47cFD
-
 ```
 
-Now we can get the [delegated address](https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0048.md) (using the f4 address class, but it's a t4 address in this case, because this is a type of testnet):
+Now we can get the [delegated address](https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0048.md) (using the f4 address class, but it's a t4 address in this case, because this is a type of testnet). We'll store it in the T4_ADDRESS environment variable:
 
 ```
-$ T4_ADDRESS=$(npx filecoin-address-tool delegate-address-from-eth-address --testnet $ETH_ADDRESS)
+T4_ADDRESS=$(npx filecoin-address-tool delegate-address-from-eth-address --testnet $ETH_ADDRESS)
+```
+
+Example output:
+
+```
 $ echo $T4_ADDRESS
 t410fw5dk34a4opdm2mzvsczumiklq4xmi7h5gjepvpa
 ```
 
 We'll need write access to the Lotus JSON-RPC API for the next steps. Let's get
-the token:
+the token, and store it in the TOKEN environment variable:
 
 ```
-$ TOKEN=$(curl -s https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/token)
+TOKEN=$(curl -s https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/token)
+```
+
+Example output:
+
+```
 $ echo $TOKEN
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.j4q3Kt3joelJ6dv5u--pO6hu5cmTYPAwDfgHBbAgRco
 ```
 
-Let's use the Lotus JSON-RPC API to get the default address in the Lotus wallet, which should be the genesis address:
+Let's use the Lotus JSON-RPC API to get the default address in the Lotus wallet, which should be the genesis address, and store it in the GENESIS_ADDRESS environment variable:
 
 ```
-$ GENESIS_ADDRESS=$(curl -s -X POST \
+GENESIS_ADDRESS=$(curl -s -X POST \
     'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $TOKEN" \
@@ -421,6 +442,11 @@ $ GENESIS_ADDRESS=$(curl -s -X POST \
 }
 EOF
 )
+```
+
+Example output:
+
+```
 $ echo $GENESIS_ADDRESS
 t3wnq437pa35rq5mkmqi73dhxru6i3bwilsbqjchaiz272tytlpturmbvzn3zfscrpf5cwipyniuga6u7zvzzq
 ```
@@ -430,7 +456,7 @@ Here is the [Lotus JSON-RPC API documentation](https://lotus.filecoin.io/referen
 Let's transfer 100 test FIL tokens to our t4 address.
 
 ```
-$ curl -s -X POST \
+curl -s -X POST \
     'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $TOKEN" \
@@ -461,7 +487,7 @@ EOF
 It will take some time to execute. Wait a minute, and then check the balance on the t4 address:
 
 ```
-$ curl -s -X POST \
+curl -s -X POST \
     'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --data @- << EOF | jq
@@ -476,6 +502,8 @@ $ curl -s -X POST \
 }
 EOF
 ```
+
+If you see 'actor not found', then message hasn't executed yet. Wait a bit and try again.
 
 The result should look like this if the transfer succeeded:
 
@@ -500,7 +528,16 @@ The result should look like this if the transfer succeeded:
 The address has a balance, so we can go back to using Foundry to
 deploy our smart contract.
 
+```
+forge create \
+  --rpc-url https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0 \
+  --private-key $PRIVATE_KEY \
+  src/Counter.sol:Counter
+```
 
+**Oh no!** This fails for some reason ... we need to investigate.
+
+(to be continued...)
 
 ## Requesting custom endpoints
 
