@@ -248,20 +248,91 @@ It uses the Caddy web server to implement the reverse proxy and to serve the tok
 
 To "spin up" the localnet, simply make a web request to the endpoint. Localnet endpoints in the "quick" namespace are configured to run on a Kubernetes node that is already provisioned, so the "pod" with the containers gets started fairly quickly (less than 30 seconds). The Lotus Docker images contain a pre-initialized blockchain, so once started, it should be mining new blocks in less than a minute.
 
-The Lotus node [JSON-RPC API](https://lotus.filecoin.io/reference/basics/overview/) for this example can be accessed using curl:
+The Lotus node [JSON-RPC API](https://lotus.filecoin.io/reference/basics/overview/) for this example can be accessed using curl (plus jq for pretty-printing):
 
 ```
 curl -X POST \
-     -H "Content-Type: application/json" \
-     --data '{ "jsonrpc": "2.0", "method": "Filecoin.ChainHead", "params": [], "id": 1 }' \
-     'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0'
+    'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
+    --header "Content-Type: application/json" \
+    --data @- << EOF | jq
+{
+  "jsonrpc": "2.0",
+  "method": "Filecoin.ChainHead",
+  "params": [],
+  "id": 1
+}
+EOF
 ```
 
 Example output:
 
 ```
-{"jsonrpc":"2.0","result":{"Cids":[{"/":"bafy2bzacebkzzurj5xhirocwa2cqo344j3zmwkb6uihnwdkxtwthnwoosytqm"}],"Blocks":[{"Miner":"t01000","Ticket":{"VRFProof":"sKa3haHSLkz4KcEvl9F2vruAbEyjSfsski7y1mZ4s3jFWINZJFuceAz/y819bzDaAWc5VMUS8TNevV0AwFx30xUjL0+/aI+DxWi1uY9O+GYWMxb4ObFuJlUH/PoWwbQH"},"ElectionProof":{"WinCount":7,"VRFProof":"kwaa9xrFjv84LYwFcxkY3Mjamix9rWpUF3+eYH8Zx/QkuTyBBmwF5TGiwP//ClYmEZ/vv1yk1PMzPqpL99IJf367uv3/nMMtqvCQPDGGIx/mRkFcBDJydGfgmysDvR9o"},"BeaconEntries":null,"WinPoStProof":[{"PoStProof":0,"ProofBytes":"scxmW3L+VseJtfetxoyAj/qgNmHxIgqrmoub4x6i3z8EbWTF/Ns9NSYHp/ZMlp+2t3jeaxlHjLTeTP5cS+Q5/eO1sGN6wgcl55tug382r8vNwRPuf/PDKRGMe0xqAZZrGcH2aI4YhdCu1LUiHM+mOq6TDx5gxTQv+E7cl4gyNTBuiJhsdL6JuXGIMfsOGeryqTfga29Fb1d35uEemCLV1LF3Ze4H4p1zziIuFWw6UXVnc3CJdOmXw0ewQMn8g2zr"}],"Parents":[{"/":"bafy2bzacec5lyj3bdxxcjwz4fmwpfzoovcwfqjqzw365nltrgvu4idskmlgu6"}],"ParentWeight":"38016","Height":7,"ParentStateRoot":{"/":"bafy2bzacedcb2nfxhmgngnvqcndywkmgc72nccukd2flq3fjmdnzqzcxykriu"},"ParentMessageReceipts":{"/":"bafy2bzacedswlcz5ddgqnyo3sak3jmhmkxashisnlpq6ujgyhe4mlobzpnhs6"},"Messages":{"/":"bafy2bzacecmda75ovposbdateg7eyhwij65zklgyijgcjwynlklmqazpwlhba"},"BLSAggregate":{"Type":2,"Data":"wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"},"Timestamp":1671829791,"BlockSig":{"Type":2,"Data":"hvVM0SUidajtLdiElxLlx1PS3CS08bdfRTpZIj3O3jytVaoN5X7VEBmY2dx7HiHiEWHr80BSRz5oryGGHpsfzCSufS1XJe97RMbhCc2xcT4+h6U2g6vYwAp4bsFVdeTF"},"ForkSignaling":0,"ParentBaseFee":"39273187"}],"Height":7},"id":1}
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "Cids": [
+      {
+        "/": "bafy2bzaceaopub3p7kduksvbpz4k2xtc4bsb7m7op5zkzt2ehmnk3pkb7ppza"
+      }
+    ],
+    "Blocks": [
+      {
+        "Miner": "t01000",
+        "Ticket": {
+          "VRFProof": "tcyL+b3fUxlucpuh6g/vGl6c6N/1cXANMTMlQZkS4zSFunSrYetaZ/VJNLv1tg/sCvHTU454d0gqxay0N34iP084In2yPl+D9AgoCqBUMv3fFBHX0FJnkaIYPsFgNwMG"
+        },
+        "ElectionProof": {
+          "WinCount": 2,
+          "VRFProof": "rxoqF2va6v2WbHXTSIT2OYL/kiEW1yHhRiobrvofKA0YbimK4+S8xaj+/j0y8RFzAC5bkkGKFEny1b0YDMF4xwhzMFhbpV3kEqPDmzJWktncKBQ5BUBeAnSqoyRKMVZz"
+        },
+        "BeaconEntries": [
+          {
+            "Round": 2596008,
+            "Data": "hu839V1EYEdNW2hHduJaw+PSCcvlRloU9vGeRkmRNLPJLRbtU6hMb4Y8dhQ89VkGC5hRD19rWKkJ/uMKmMFMU73P9yXL5yDcuHiY1AGl8XfPV10MmYzw3IYKV+k23cDt"
+          }
+        ],
+        "WinPoStProof": [
+          {
+            "PoStProof": 0,
+            "ProofBytes": "qvDMAAsVfUjoaVOwivt9JAgGO69CgOMCDTwPZKwe/mk9SqZ3kPhBZT/wAiXx/bEZoeT8eC2eRVP7TvfLmoFbPhmhbxQcLSj2zkE6SvtGZpH5tGuGHc4JKpe2zGDuI355ASwF9e/QN6icZAmFSd4mFi9UCZ3l/Nx9KzblmLdPwqAJsD6K6afuMUc3MLf4sYQSj8+ED0jkWJxpmMtfke5Vt5XB/gjOH0XLOcFvqI1wYNc/4MxPxM4HnLiTu1Vrn0vi"
+          }
+        ],
+        "Parents": [
+          {
+            "/": "bafy2bzacec2rrsehl4nwifqyb64vktlmgaoi6mao4l5kvgqkupmke7en3rb5s"
+          }
+        ],
+        "ParentWeight": "111744",
+        "Height": 21,
+        "ParentStateRoot": {
+          "/": "bafy2bzacebr3s5oesgv5z5yudkasgarzmjchbfnowjyra6hhigqknegtmuu7e"
+        },
+        "ParentMessageReceipts": {
+          "/": "bafy2bzacedswlcz5ddgqnyo3sak3jmhmkxashisnlpq6ujgyhe4mlobzpnhs6"
+        },
+        "Messages": {
+          "/": "bafy2bzacecmda75ovposbdateg7eyhwij65zklgyijgcjwynlklmqazpwlhba"
+        },
+        "BLSAggregate": {
+          "Type": 2,
+          "Data": "wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "Timestamp": 1673311265,
+        "BlockSig": {
+          "Type": 2,
+          "Data": "rrsW2rUOckBTOsITJgjFfRSN8cs/UCTIGbbC1n+WYhIIDKMzlvnfKEN3PRnNBrPWAe5O8BTIUJUPyyCN0ykMAQphfH/YLSIPNgJqHSDfBiJfaE7mhct/m419xqMea3fT"
+        },
+        "ForkSignaling": 0,
+        "ParentBaseFee": "6923132"
+      }
+    ],
+    "Height": 21
+  },
+  "id": 1
+}
 ```
+
+The first time you run this when the localnet has been suspended, you may get an empty response. Accessing the endpoint will cause the localnet to start up.
 
 When the localnet is first starting from a cold start, the "Height" will be 7, but it will start increasing after the miner finishing initializing, which takes a little while. Try running the curl script multiple times until it the "Height" starts to increment.
 
@@ -279,7 +350,157 @@ Note that there is no security at all! Any application can fetch this token and 
 
 ## Foundry tutorial
 
-... coming soon!
+Let's deploy a simple smart contract to the localnet!
+
+We're going to use [Foundry](https://book.getfoundry.sh/), so the first step is to install it:
+
+* https://getfoundry.sh/
+
+Next, we'll create the `hello_foundry` project following the tutorial:
+
+* https://book.getfoundry.sh/getting-started/first-steps
+
+```
+$ forge init hello_foundry
+$ cd hello_foundry
+$ forge build
+$ forge test
+```
+
+If that went well, we'll have a simple smart contract ready to deploy to the localnet.
+
+In order to deploy it, we'll need a private key for an Ethereum address. Initially, when the localnet starts up, there is only an address for the "genesis actor" with funds.
+
+We can generate an Ethereum private key using the [filecoin-address-tool](https://github.com/jimpick/filecoin-address-tool) utility (needs Node.js):
+
+```
+$ PRIVATE_KEY=$(npx filecoin-address-tool generate-random-eth-private-key)
+$ echo $PRIVATE_KEY
+ecec429285d98762180b17ac2750f2ee688ee88c3dd700072576aca6d7414b64
+```
+
+We'll need to transfer funds to it. First, let's get the associated Ethereum address for our private key:
+
+```
+$ ETH_ADDRESS=$(npx filecoin-address-tool eth-address-from-eth-private-key $PRIVATE_KEY)
+$ echo $ETH_ADDRESS
+B746aDF01c73C6cd333590b346214B872ec47cFD
+
+```
+
+Now we can get the [delegated address](https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0048.md) (using the f4 address class, but it's a t4 address in this case, because this is a type of testnet):
+
+```
+$ T4_ADDRESS=$(npx filecoin-address-tool delegate-address-from-eth-address --testnet $ETH_ADDRESS)
+$ echo $T4_ADDRESS
+t410fw5dk34a4opdm2mzvsczumiklq4xmi7h5gjepvpa
+```
+
+We'll need write access to the Lotus JSON-RPC API for the next steps. Let's get
+the token:
+
+```
+$ TOKEN=$(curl -s https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/token)
+$ echo $TOKEN
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.j4q3Kt3joelJ6dv5u--pO6hu5cmTYPAwDfgHBbAgRco
+```
+
+Let's use the Lotus JSON-RPC API to get the default address in the Lotus wallet, which should be the genesis address:
+
+```
+$ GENESIS_ADDRESS=$(curl -s -X POST \
+    'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
+    --header "Content-Type: application/json" \
+    --header "Authorization: Bearer $TOKEN" \
+    --data @- << EOF | jq -r .result
+{
+  "jsonrpc": "2.0",
+  "method": "Filecoin.WalletDefaultAddress",
+  "params": [],
+  "id": 1
+}
+EOF
+)
+$ echo $GENESIS_ADDRESS
+t3wnq437pa35rq5mkmqi73dhxru6i3bwilsbqjchaiz272tytlpturmbvzn3zfscrpf5cwipyniuga6u7zvzzq
+```
+
+Here is the [Lotus JSON-RPC API documentation](https://lotus.filecoin.io/reference/basics/overview/).
+
+Let's transfer 100 test FIL tokens to our t4 address.
+
+```
+$ curl -s -X POST \
+    'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
+    --header "Content-Type: application/json" \
+    --header "Authorization: Bearer $TOKEN" \
+    --data @- << EOF | jq
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "Filecoin.MpoolPushMessage",
+  "params": [
+    {
+      "Version": 0,
+      "To": "$T4_ADDRESS",
+      "From": "$GENESIS_ADDRESS",
+      "Nonce":0,
+      "Value":"100000000000000000000",
+      "GasLimit":1992322,
+      "GasFeeCap":"3484003",
+      "GasPremium":"100649",
+      "Method":0,
+      "Params":null
+    },
+    null
+  ]
+}
+EOF
+```
+
+It will take some time to execute. Wait a minute, and then check the balance on the t4 address:
+
+```
+$ curl -s -X POST \
+    'https://shared-fvm-carbonado-jan-9.quick.cluster-3.localnet.farm/rpc/v0' \
+    --header "Content-Type: application/json" \
+    --data @- << EOF | jq
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "Filecoin.StateGetActor",
+  "params": [
+    "$T4_ADDRESS",
+    null
+  ]
+}
+EOF
+```
+
+The result should look like this if the transfer succeeded:
+
+```
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "Code": {
+      "/": "bafk2bzacecrloi3xb6bwxsiwtl2chxlgisv5742nkcksahcax3fkrso5wiqrk"
+    },
+    "Head": {
+      "/": "bafy2bzacebc3bt6cedhoyw34drrmjvazhu4oj25er2ebk4u445pzycvq4ta4a"
+    },
+    "Nonce": 0,
+    "Balance": "100000000000000000000",
+    "Address": "t410fw5dk34a4opdm2mzvsczumiklq4xmi7h5gjepvpa"
+  },
+  "id": 1
+}
+```
+
+The address has a balance, so we can go back to using Foundry to
+deploy our smart contract.
+
+
 
 ## Requesting custom endpoints
 
