@@ -539,6 +539,106 @@ forge create \
 
 (to be continued...)
 
+## Hardhat
+
+Until forge is working, let's try this instead: https://github.com/filecoin-project/fevm-hardhat-kit
+
+hardhat.config.js:
+
+```
+require("@nomicfoundation/hardhat-toolbox")
+require("hardhat-deploy")
+require("hardhat-deploy-ethers")
+require("./tasks")
+require("dotenv").config()
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
+    solidity: "0.8.17",
+    defaultNetwork: "localnetFarm",
+    networks: {
+        localnetFarm: {
+            chainId: 31415926,
+            url: "https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v1",
+            accounts: [ "a336dabf5a760ebb7ccb6aecb07160ae42387131de9aea1876917c309410380a" ],
+        },
+    },
+    paths: {
+        sources: "./contracts",
+        tests: "./test",
+        cache: "./cache",
+        artifacts: "./artifacts",
+    },
+}
+```
+
+Set the private key in `accounts:` to whatever $PRIVATE_KEY is.
+
+The f4address returned by `yarn hardhat get-address` should match $T4_ADDRESS.
+
+helper-hardhat-config.js:
+
+```
+const { ethers } = require("hardhat")
+
+const networkConfig = {
+    31415926: {
+        name: "localnetFarm",
+        tokenToBeMinted: 12000,
+    },
+}
+
+// const developmentChains = ["hardhat", "localhost"]
+
+module.exports = {
+    networkConfig,
+    // developmentChains,
+}
+```
+
+Example deploy:
+
+```
+$ yarn hardhat deploy
+You are using a version of Node.js that is not supported by Hardhat, and it may work incorrectly, or not work at all.
+
+Please, make sure you are using a supported version of Node.js.
+
+To learn more about which versions of Node.js are supported go to https://hardhat.org/nodejs-versions
+You have both ethereum-waffle and @nomicfoundation/hardhat-chai-matchers installed. They don't work correctly together, so please make sure you only use one.
+
+We recommend you migrate to @nomicfoundation/hardhat-chai-matchers. Learn how to do it here: https://hardhat.org/migrate-from-waffle
+Nothing to compile
+Wallet Ethereum Address: 0x7eE760129f3d3F210Afee44041F2CcB33f220eec
+deploying SimpleCoin...
+deploying "SimpleCoin" (tx: 0xaba0eeec3ecbbae5bcb081a5eef45c2c64952c9a2e5bf2a727d447da0e30d2ee)...: deployed at 0x4b5eaaf221c103B1fc6b2207f1cfF7C1ed0FA85E with 12286696 gas
+deploying MockMinerAPI...
+deploying "MockMinerAPI" (tx: 0xfa66c8f084da1bbaf9ae998c966b983a119dca780fa752264963071f4c127e9c)...: deployed at 0x8c426B59DDB0155B5460dA2625090aecfaBc8842 with 25987066 gas
+deploying MockMarketAPI...
+deploying "MockMarketAPI" (tx: 0x36350a23188827fbe7a0a56d4b87f286bbc35ac277c7899fd145e2223f589618)...: deployed at 0xB448b765F4dFa6E4eBbD6b8D07C2a1b7C5Ade02c with 45084839 gas
+Deploying FilecoinMarketConsumer...
+deploying "FilecoinMarketConsumer" (tx: 0xc03323ffa88aa10571efde82877a4caa0c126a99b39014d31b38dad0ca029abf)...: deployed at 0x5505CCADaf0eb22e40a2ef98dFa7A926Ee2e5D1A with 48003858 gas
+```
+
+Retrieve balance:
+
+```
+$ yarn hardhat get-balance --contract 0x4b5eaaf221c103B1fc6b2207f1cfF7C1ed0FA85E --account $ETH_ADDRESS
+You are using a version of Node.js that is not supported by Hardhat, and it may work incorrectly, or not work at all.
+
+Please, make sure you are using a supported version of Node.js.
+
+To learn more about which versions of Node.js are supported go to https://hardhat.org/nodejs-versions
+You have both ethereum-waffle and @nomicfoundation/hardhat-chai-matchers installed. They don't work correctly together, so please make sure you only use one.
+
+We recommend you migrate to @nomicfoundation/hardhat-chai-matchers. Learn how to do it here: https://hardhat.org/migrate-from-waffle
+Reading SimpleCoin owned by 7eE760129f3d3F210Afee44041F2CcB33f220eec  on network  localnetFarm
+Data is:  12000
+Total amount of Minted tokens is 12000
+```
+
+
 ## Requesting custom endpoints
 
 For now, just file a GitHub issue and we'll set one up for you.
