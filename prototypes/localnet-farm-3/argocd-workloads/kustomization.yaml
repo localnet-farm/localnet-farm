@@ -4,6 +4,7 @@ resources:
 - hello-quick.yaml
 - shared/fvm-carbonado-1-p1-quick.yaml
 - shared/fvm-carbonado-jan-9-quick.yaml
+- shared/fvm-hyperspace-jan-17-quick.yaml
 - jimpick/fvm-sapphire-patch-1.yaml
 - jimpick/fvm-sapphire-patch-1-quick.yaml
 - jimpick/fvm-carbonado-1.yaml
