@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: shared-fvm-hyperspace-jan-17
+  name: shared-fvm-hyperspace-jan-19
   namespace: quick
 spec:
   template:
