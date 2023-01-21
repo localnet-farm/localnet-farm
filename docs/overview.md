@@ -222,13 +222,17 @@ Because it describes a Knative service, when it is loaded, an https endpoint wil
 
 The endpoint is named after the service name in the resource file ("shared-fvm-hyperspace-latest") and the namespace ("quick").
 
+This endpoint is configured to spin down the localnet after 15 minutes of inactivity. Because
+it uses ephemeral storage, when it starts up again, the localnet will be reset.
+
 We are using naming conventions to identify and organize all the endpoints.
 
 The "shared-" part of the name means that this particular endpoint is a public endpoint that multiple developers can share. If instead a developer or team needs an isolated localnet instance, it might be referred to using a unique identifier, like their GitHub account name, eg. "jimpick-".
 
-The "-fvm-hyperspace-latest" part of the name refers to a specific set of Docker images. In this case, these images were build with pre-release FVM support from the Carbonado.1 Patch 1 release tag. Endpoints that include a particular release name can be kept around for a long time, which is useful for things like demos that you don't want to break when new releases come out.
+The "-fvm-hyperspace-latest" part of the name refers to a generic release name, eg. "-fvm-latest". Any applications using that endpoint would automatically connect to the latest code deployed there (the latest in a series of builds that are following the hyperspace testnet branch).
 
-Alternatively, an endpoint could be created with a generic release name, eg. "-fvm-latest". Any applications using that endpoint would automatically connect to the latest code deployed there.
+Alternatively, an endpoint could be created with a specific set of Docker images. For example, an endpoint might point to a immutable image built from a particular git hash. Endpoints that include a particular release name can be kept around for a long time, which is useful for things like demos that you don't want to break when new releases come out.
+
 
 In the YAML file above, there is a "node" and a "miner-1" container. These refer to images that were published to the GitHub Container Registry. Check out this repo to see how the images were built:
 
@@ -376,7 +380,7 @@ In order to deploy it, we'll need a private key for an Ethereum address. Initial
 We can generate an Ethereum private key using the [filecoin-address-tool](https://github.com/jimpick/filecoin-address-tool) utility (needs Node.js). We'll store it in the PRIVATE_KEY environment variable:
 
 ```
-PRIVATE_KEY=$(npx filecoin-address-tool generate-random-eth-private-key)
+export PRIVATE_KEY=$(npx filecoin-address-tool generate-random-eth-private-key)
 ```
 
 Example output:
@@ -389,7 +393,7 @@ ecec429285d98762180b17ac2750f2ee688ee88c3dd700072576aca6d7414b64
 We'll need to transfer funds to it. First, let's get the associated Ethereum address for our private key, and store it in the ETH_ADDRESS environment variable:
 
 ```
-ETH_ADDRESS=$(npx filecoin-address-tool eth-address-from-eth-private-key $PRIVATE_KEY)
+export ETH_ADDRESS=$(npx filecoin-address-tool eth-address-from-eth-private-key $PRIVATE_KEY)
 ```
 
 Example output:
@@ -402,7 +406,7 @@ B746aDF01c73C6cd333590b346214B872ec47cFD
 Now we can get the [delegated address](https://github.com/filecoin-project/FIPs/blob/master/FIPS/fip-0048.md) (using the f4 address class, but it's a t4 address in this case, because this is a type of testnet). We'll store it in the T4_ADDRESS environment variable:
 
 ```
-T4_ADDRESS=$(npx filecoin-address-tool delegate-address-from-eth-address --testnet $ETH_ADDRESS)
+export T4_ADDRESS=$(npx filecoin-address-tool delegate-address-from-eth-address --testnet $ETH_ADDRESS)
 ```
 
 Example output:
@@ -416,7 +420,7 @@ We'll need write access to the Lotus JSON-RPC API for the next steps. Let's get
 the token, and store it in the TOKEN environment variable:
 
 ```
-TOKEN=$(curl -s https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/token)
+export TOKEN=$(curl -s https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/token)
 ```
 
 Example output:
@@ -429,7 +433,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiw
 Let's use the Lotus JSON-RPC API to get the default address in the Lotus wallet, which should be the genesis address, and store it in the GENESIS_ADDRESS environment variable:
 
 ```
-GENESIS_ADDRESS=$(curl -s -X POST \
+export GENESIS_ADDRESS=$(curl -s -X POST \
     'https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $TOKEN" \
@@ -561,7 +565,7 @@ module.exports = {
         localnetFarm: {
             chainId: 31415926,
             url: "https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v1",
-            accounts: [ "a336dabf5a760ebb7ccb6aecb07160ae42387131de9aea1876917c309410380a" ],
+            accounts: [PRIVATE_KEY],
         },
     },
     paths: {
@@ -572,8 +576,6 @@ module.exports = {
     },
 }
 ```
-
-Set the private key in `accounts:` to whatever $PRIVATE_KEY is.
 
 The f4address returned by `yarn hardhat get-address` should match $T4_ADDRESS.
 
