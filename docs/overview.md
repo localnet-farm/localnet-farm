@@ -212,21 +212,21 @@ This particular localnet is intended for "shared" usage. It is built against a s
 
 The Kubernetes resource that configures the Docker images is here:
 
-* https://github.com/jimpick/localnet-farm/blob/main/prototypes/localnet-farm-3/argocd-workloads/shared/fvm-hyperspace-jan-17-quick.yaml
+* https://github.com/jimpick/localnet-farm/blob/main/prototypes/localnet-farm-3/argocd-workloads/shared/fvm-hyperspace-latest-quick.yaml
 
 This YAML file gets loaded into the Kubernetes cluster we have set up on AWS named "localnet-farm-3".
 
 Because it describes a Knative service, when it is loaded, an https endpoint will appear at:
 
-* https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm
+* https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm
 
-The endpoint is named after the service name in the resource file ("shared-fvm-hyperspace-jan-17") and the namespace ("quick").
+The endpoint is named after the service name in the resource file ("shared-fvm-hyperspace-latest") and the namespace ("quick").
 
 We are using naming conventions to identify and organize all the endpoints.
 
 The "shared-" part of the name means that this particular endpoint is a public endpoint that multiple developers can share. If instead a developer or team needs an isolated localnet instance, it might be referred to using a unique identifier, like their GitHub account name, eg. "jimpick-".
 
-The "-fvm-hyperspace-jan-17" part of the name refers to a specific set of Docker images. In this case, these images were build with pre-release FVM support from the Carbonado.1 Patch 1 release tag. Endpoints that include a particular release name can be kept around for a long time, which is useful for things like demos that you don't want to break when new releases come out.
+The "-fvm-hyperspace-latest" part of the name refers to a specific set of Docker images. In this case, these images were build with pre-release FVM support from the Carbonado.1 Patch 1 release tag. Endpoints that include a particular release name can be kept around for a long time, which is useful for things like demos that you don't want to break when new releases come out.
 
 Alternatively, an endpoint could be created with a generic release name, eg. "-fvm-latest". Any applications using that endpoint would automatically connect to the latest code deployed there.
 
@@ -252,7 +252,7 @@ The Lotus node [JSON-RPC API](https://lotus.filecoin.io/reference/basics/overvie
 
 ```
 curl -X POST \
-    'https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v0' \
+    'https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --data @- << EOF | jq
 {
@@ -342,7 +342,7 @@ accessing the Lotus wallet API so funds can be transferred out of the
 genesis address.
 
 ```
-$ curl https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/token; echo
+$ curl https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/token; echo
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.9icsCJ4GhHF_HCwrJxetiDgeNrfMhW_gkcIvIUo5dGc
 ```
 
@@ -416,7 +416,7 @@ We'll need write access to the Lotus JSON-RPC API for the next steps. Let's get
 the token, and store it in the TOKEN environment variable:
 
 ```
-TOKEN=$(curl -s https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/token)
+TOKEN=$(curl -s https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/token)
 ```
 
 Example output:
@@ -430,7 +430,7 @@ Let's use the Lotus JSON-RPC API to get the default address in the Lotus wallet,
 
 ```
 GENESIS_ADDRESS=$(curl -s -X POST \
-    'https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v0' \
+    'https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $TOKEN" \
     --data @- << EOF | jq -r .result
@@ -457,7 +457,7 @@ Let's transfer 100 test FIL tokens to our t4 address.
 
 ```
 curl -s -X POST \
-    'https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v0' \
+    'https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $TOKEN" \
     --data @- << EOF | jq
@@ -488,7 +488,7 @@ It will take some time to execute. Wait a minute, and then check the balance on 
 
 ```
 curl -s -X POST \
-    'https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v0' \
+    'https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0' \
     --header "Content-Type: application/json" \
     --data @- << EOF | jq
 {
@@ -530,7 +530,7 @@ deploy our smart contract.
 
 ```
 forge create \
-  --rpc-url https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v0 \
+  --rpc-url https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0 \
   --private-key $PRIVATE_KEY \
   src/Counter.sol:Counter
 ```
@@ -560,7 +560,7 @@ module.exports = {
     networks: {
         localnetFarm: {
             chainId: 31415926,
-            url: "https://shared-fvm-hyperspace-jan-17.quick.cluster-3.localnet.farm/rpc/v1",
+            url: "https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v1",
             accounts: [ "a336dabf5a760ebb7ccb6aecb07160ae42387131de9aea1876917c309410380a" ],
         },
     },
