@@ -564,7 +564,7 @@ module.exports = {
     networks: {
         localnetFarm: {
             chainId: 31415926,
-            url: "https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v1",
+            url: "https://shared-fvm-hyperspace-latest.quick.cluster-3.localnet.farm/rpc/v0",
             accounts: [PRIVATE_KEY],
         },
     },
