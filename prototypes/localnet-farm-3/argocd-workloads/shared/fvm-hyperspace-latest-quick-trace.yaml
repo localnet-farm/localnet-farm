@@ -59,14 +59,13 @@ spec:
         env:
           - name: RUST_LOG
             value: trace
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
         command: [ bash, -c ]
         args:
           - |
             #while true; do sleep 50; done
             lotus-miner run --nosync
-        env:
-          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
-            value: "0h0m30s"
         resources:
           requests:
             memory: "2Gi"
