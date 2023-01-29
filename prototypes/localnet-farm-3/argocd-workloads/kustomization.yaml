@@ -19,5 +19,6 @@ resources:
 - collectif/fvm-hyperspace-jan-17-default.yaml
 - collectif/fvm-hyperspace-jan-19-quick.yaml
 - collectif/fvm-hyperspace-latest-quick.yaml
+- glif/fvm-v1_20_0-2023_01_27-60193a2-quick.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
