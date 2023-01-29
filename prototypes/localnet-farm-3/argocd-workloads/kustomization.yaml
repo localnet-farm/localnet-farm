@@ -7,6 +7,7 @@ resources:
 - shared/fvm-hyperspace-jan-17-quick.yaml
 - shared/fvm-hyperspace-jan-19-quick.yaml
 - shared/fvm-hyperspace-latest-quick.yaml
+- shared/fvm-hyperspace-latest-quick-trace.yaml
 - jimpick/fvm-sapphire-patch-1.yaml
 - jimpick/fvm-sapphire-patch-1-quick.yaml
 - jimpick/fvm-carbonado-1.yaml
