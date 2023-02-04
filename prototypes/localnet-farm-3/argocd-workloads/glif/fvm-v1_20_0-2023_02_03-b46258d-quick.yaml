@@ -78,6 +78,7 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
+            sleep 60
             lotus-miner init --owner $OWNER --nosync
             lotus-miner run --nosync --miner-api 2346
         env:
@@ -95,6 +96,7 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
+            sleep 120
             lotus-miner init --owner $OWNER --nosync
             lotus-miner run --nosync --miner-api 2347
         env:
