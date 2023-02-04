@@ -78,7 +78,7 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            sleep 60
+            rm -f /var/tmp/filecoin-proof-parameters/fetch.lock
             lotus-miner init --owner $OWNER --nosync
             lotus-miner run --nosync --miner-api 2346
         env:
@@ -96,7 +96,7 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            sleep 120
+            rm -f /var/tmp/filecoin-proof-parameters/fetch.lock
             lotus-miner init --owner $OWNER --nosync
             lotus-miner run --nosync --miner-api 2347
         env:
