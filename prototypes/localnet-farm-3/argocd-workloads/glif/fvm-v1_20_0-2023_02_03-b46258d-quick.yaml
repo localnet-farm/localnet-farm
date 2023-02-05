@@ -21,7 +21,7 @@ spec:
                 - amd64
       containers:
       - name: node
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:8682e01f61811f106e47af9a90894d6fce33374b36ec73db8b8c360f003ac307
         command: [ bash, -c ]
         args:
           - |
@@ -52,7 +52,7 @@ spec:
             memory: "256Mi"
             cpu: "500m"
       - name: miner-1
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:8682e01f61811f106e47af9a90894d6fce33374b36ec73db8b8c360f003ac307
         command: [ bash, -c ]
         args:
           - |
@@ -69,7 +69,7 @@ spec:
             memory: "2Gi"
             cpu: "500m"
       - name: miner-2
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:8682e01f61811f106e47af9a90894d6fce33374b36ec73db8b8c360f003ac307
         command: [ bash, -c ]
         args:
           - |
@@ -86,7 +86,7 @@ spec:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
       - name: miner-3
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:8682e01f61811f106e47af9a90894d6fce33374b36ec73db8b8c360f003ac307
         command: [ bash, -c ]
         args:
           - |
