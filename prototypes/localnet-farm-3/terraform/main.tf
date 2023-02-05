@@ -81,8 +81,10 @@ module "eks" {
         device_name = "/dev/xvda"
         ebs         = {
           volume_size           = 2
-          volume_type           = "gp2"
-          #iops                  = 100
+          volume_type           = "gp3"
+          iops                  = 3000
+          throughput            = 150
+          encrypted             = false
           delete_on_termination = true
         }
       }
@@ -90,8 +92,10 @@ module "eks" {
         device_name = "/dev/xvdb"
         ebs         = {
           volume_size           = 80
-          volume_type           = "gp2"
-          #iops                  = 100
+          volume_type           = "gp3"
+          iops                  = 3000
+          throughput            = 150
+          encrypted             = false
           delete_on_termination = true
         }
       }
