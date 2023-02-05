@@ -82,7 +82,7 @@ module "eks" {
         ebs         = {
           volume_size           = 2
           volume_type           = "gp2"
-          iops                  = 100
+          #iops                  = 100
           delete_on_termination = true
         }
       }
@@ -91,7 +91,7 @@ module "eks" {
         ebs         = {
           volume_size           = 80
           volume_type           = "gp2"
-          iops                  = 100
+          #iops                  = 100
           delete_on_termination = true
         }
       }
