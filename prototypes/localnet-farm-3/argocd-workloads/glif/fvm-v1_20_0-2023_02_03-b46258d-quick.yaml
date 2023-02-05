@@ -21,7 +21,7 @@ spec:
                 - amd64
       containers:
       - name: node
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:afc93f8f98fa4ffa9f0e9abaa452211f61eb94f06d1166b5f4d9a26df6e8c5bb
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
         command: [ bash, -c ]
         args:
           - |
@@ -52,7 +52,7 @@ spec:
             memory: "256Mi"
             cpu: "500m"
       - name: miner-1
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:afc93f8f98fa4ffa9f0e9abaa452211f61eb94f06d1166b5f4d9a26df6e8c5bb
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
         command: [ bash, -c ]
         args:
           - |
@@ -69,7 +69,7 @@ spec:
             memory: "2Gi"
             cpu: "500m"
       - name: miner-2
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:afc93f8f98fa4ffa9f0e9abaa452211f61eb94f06d1166b5f4d9a26df6e8c5bb
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
         command: [ bash, -c ]
         args:
           - |
@@ -78,7 +78,6 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            rm -f /var/tmp/filecoin-proof-parameters/fetch.lock
             lotus-miner init --owner $OWNER --nosync
             lotus-miner run --nosync --miner-api 2346
         env:
@@ -87,7 +86,7 @@ spec:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
       - name: miner-3
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:afc93f8f98fa4ffa9f0e9abaa452211f61eb94f06d1166b5f4d9a26df6e8c5bb
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:72d9d549996c5e58b3cdc69146fe8f75a216b702d8c12d1066f72f976827e86c
         command: [ bash, -c ]
         args:
           - |
@@ -96,7 +95,6 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            rm -f /var/tmp/filecoin-proof-parameters/fetch.lock
             lotus-miner init --owner $OWNER --nosync
             lotus-miner run --nosync --miner-api 2347
         env:
