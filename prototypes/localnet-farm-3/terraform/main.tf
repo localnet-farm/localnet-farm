@@ -70,8 +70,8 @@ module "eks" {
 	}
 
 	eks_managed_node_groups = {
-		admin = {
-			name = "node-group-admin"
+		admin2 = {
+			name = "node-group-admin2"
 
 			instance_types = ["c6a.2xlarge"]
 
