@@ -61,27 +61,57 @@ module "eks" {
 
 	eks_managed_node_group_defaults = {
 		#ami_type = "AL2_x86_64"
-		ami_type = "BOTTLEROCKET_x86_64"
+		#ami_type = "BOTTLEROCKET_x86_64"
 
 		attach_cluster_primary_security_group = true
 
 		# Disabling and using externally provided security groups
 		#create_security_group = false
+
+    # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1845#issuecomment-1054248734
+
+    ami_type              = "BOTTLEROCKET_x86_64"
+    platform              = "bottlerocket"
+    #instance_types        = [ "t3.medium" ]
+		instance_types = ["c6a.2xlarge"]
+
+    # Force gp3 & encryption (https://github.com/bottlerocket-os/bottlerocket#default-volumes)
+    block_device_mappings = {
+      xvda = {
+        device_name = "/dev/xvda"
+        ebs         = {
+          volume_size           = 2
+          volume_type           = "gp2"
+          iops                  = 100
+          delete_on_termination = true
+        }
+      }
+      xvdb = {
+        device_name = "/dev/xvdb"
+        ebs         = {
+          volume_size           = 80
+          volume_type           = "gp2"
+          iops                  = 100
+          delete_on_termination = true
+        }
+      }
+    }
 	}
 
 	eks_managed_node_groups = {
-		admin2 = {
-			name = "node-group-admin2"
+		admin = {
+			name = "node-group-admin"
 
-			instance_types = ["c6a.2xlarge"]
+			#instance_types = ["c6a.2xlarge"]
 
 			min_size     = 1
 			max_size     = 1
 			desired_size = 1
 
-      use_custom_launch_template = false
+      #use_custom_launch_template = false
 
-      disk_size = 80
+      #disk_size = 80
+
 		}
 	}
 
