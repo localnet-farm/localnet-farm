@@ -100,7 +100,7 @@ spec:
             cpu: "500m"
             ephemeral-storage: "2Gi"
       - name: miner-3
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:cfb0d8cfde66b57ffeb73b73ca8e9b46cf095608a358e5d3d6a847c3456d6655
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:bad522696970ace06f7e94c326472906101cb9964bc5e7bfac99867bce93f5c4
         command: [ bash, -c ]
         args:
           - |
