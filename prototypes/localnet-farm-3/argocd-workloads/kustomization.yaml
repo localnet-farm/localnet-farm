@@ -23,5 +23,6 @@ resources:
 - glif/fvm-v1_20_0-2023_02_03-b46258d-quick.yaml
 - glif/fvm-hyperspace-2023_02_03-b46258d-quick.yaml
 - glif/fvm-v1_20_0-2023_02_12-37e1ac5-quick.yaml
+- glif/fvm-hyperspace-2023_02_01-41cec06-quick.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
