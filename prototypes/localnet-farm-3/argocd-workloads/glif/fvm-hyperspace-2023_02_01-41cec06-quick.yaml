@@ -31,11 +31,11 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
       - name: gateway
         image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
@@ -49,10 +49,10 @@ spec:
         resources:
           requests:
             memory: "256Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "256Mi"
-            cpu: "500m"
+            cpu: "200m"
       - name: miner-1
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:bad522696970ace06f7e94c326472906101cb9964bc5e7bfac99867bce93f5c4
         command: [ bash, -c ]
@@ -66,11 +66,11 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
       - name: miner-2
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:bad522696970ace06f7e94c326472906101cb9964bc5e7bfac99867bce93f5c4
@@ -93,36 +93,9 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
             memory: "2Gi"
-            cpu: "500m"
-            ephemeral-storage: "2Gi"
-      - name: miner-3
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:bad522696970ace06f7e94c326472906101cb9964bc5e7bfac99867bce93f5c4
-        command: [ bash, -c ]
-        args:
-          - |
-            lotus wait-api
-            mkdir ~/.lotus-miner-local-net-3
-            export OWNER=$(lotus wallet default)
-            echo Owner: $OWNER
-            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            #while true; do sleep 50; done
-            lotus-miner init --owner $OWNER --nosync --sector-size 2048
-            lotus-miner run --nosync --miner-api 2347
-        env:
-          - name: LOTUS_MINER_PATH
-            value: ~/.lotus-miner-local-net-3
-          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
-            value: "0h0m30s"
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "500m"
-            ephemeral-storage: "2Gi"
-          limits:
-            memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"

@@ -31,11 +31,11 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
       - name: gateway
         image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
@@ -49,10 +49,10 @@ spec:
         resources:
           requests:
             memory: "256Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "256Mi"
-            cpu: "500m"
+            cpu: "200m"
       - name: miner-1
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
@@ -66,11 +66,11 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
       - name: miner-2
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
@@ -93,9 +93,9 @@ spec:
         resources:
           requests:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
             memory: "2Gi"
-            cpu: "500m"
+            cpu: "400m"
             ephemeral-storage: "2Gi"
