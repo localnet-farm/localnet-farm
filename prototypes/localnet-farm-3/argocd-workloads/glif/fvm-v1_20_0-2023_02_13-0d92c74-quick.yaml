@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: glif-fvm-v1-20-0-20230213-f427c2b
+  name: glif-fvm-v1-20-0-20230213-0d92c74
   namespace: quick
 spec:
   template:
@@ -21,7 +21,7 @@ spec:
                 - amd64
       containers:
       - name: node
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:fb0ac7bb003fb1aeb64daa3615dd670eb60c218fc855f906aad888063534a185
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
         args:
           - |
@@ -54,7 +54,7 @@ spec:
             memory: "256Mi"
             cpu: "500m"
       - name: miner-1
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:fb0ac7bb003fb1aeb64daa3615dd670eb60c218fc855f906aad888063534a185
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
         args:
           - |
@@ -73,7 +73,7 @@ spec:
             cpu: "500m"
             ephemeral-storage: "2Gi"
       - name: miner-2
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:fb0ac7bb003fb1aeb64daa3615dd670eb60c218fc855f906aad888063534a185
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
         args:
           - |
@@ -88,33 +88,6 @@ spec:
         env:
           - name: LOTUS_MINER_PATH
             value: ~/.lotus-miner-local-net-2
-          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
-            value: "0h0m30s"
-        resources:
-          requests:
-            memory: "2Gi"
-            cpu: "500m"
-            ephemeral-storage: "2Gi"
-          limits:
-            memory: "2Gi"
-            cpu: "500m"
-            ephemeral-storage: "2Gi"
-      - name: miner-3
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:fb0ac7bb003fb1aeb64daa3615dd670eb60c218fc855f906aad888063534a185
-        command: [ bash, -c ]
-        args:
-          - |
-            lotus wait-api
-            mkdir ~/.lotus-miner-local-net-3
-            export OWNER=$(lotus wallet default)
-            echo Owner: $OWNER
-            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            #while true; do sleep 50; done
-            lotus-miner init --owner $OWNER --nosync --sector-size 2048
-            lotus-miner run --nosync --miner-api 2347
-        env:
-          - name: LOTUS_MINER_PATH
-            value: ~/.lotus-miner-local-net-3
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
         resources:
