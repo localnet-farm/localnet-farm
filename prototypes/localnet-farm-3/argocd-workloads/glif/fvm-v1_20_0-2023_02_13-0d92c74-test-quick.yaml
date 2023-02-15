@@ -24,26 +24,6 @@ spec:
         - name: coordination
           emptyDir: {}
       containers:
-      - name: gateway
-        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
-        command: [ bash, -c ]
-        args:
-          - |
-            caddy start --config /etc/caddy/Caddyfile
-            echo 1 > /coordination/generation
-            node server.mjs
-        ports:
-          - containerPort: 3000
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "200m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
-        volumeMounts:
-          - name: coordination
-            mountPath: /coordination
       - name: node
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
@@ -61,6 +41,26 @@ spec:
             memory: "2Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: gateway
+        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
+        command: [ bash, -c ]
+        args:
+          - |
+            caddy start --config /etc/caddy/Caddyfile
+            echo 1 > /coordination/generation
+            node server.mjs
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
         volumeMounts:
           - name: coordination
             mountPath: /coordination
@@ -91,14 +91,6 @@ spec:
             memory: "2Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
-        livenessProbe:
-          exec:
-            command:
-            - cat
-            - /coordination/generation
-          initialDelaySeconds: 60
-          periodSeconds: 15
-          failureThreshold: 1
       - name: miner-2
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
@@ -126,11 +118,3 @@ spec:
             memory: "2Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
-        livenessProbe:
-          exec:
-            command:
-            - cat
-            - /coordination/generation
-          initialDelaySeconds: 60
-          periodSeconds: 15
-          failureThreshold: 1
