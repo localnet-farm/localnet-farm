@@ -33,9 +33,13 @@ spec:
             (cd ~/.lotus-local-net; python3 -m http.server 11001) &
             (
               sleep 60
-              cp /coordination/reset-counter /tmp/my-reset-counter
+              MY_COUNTER=$(cat /coordination/reset-counter)
               while true; do
-                cat /coordination/reset-counter /tmp/my-reset-counter
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  kill $(pidof lotus)
+                fi
                 sleep 60
               done
             ) &
@@ -58,7 +62,7 @@ spec:
         args:
           - |
             caddy start --config /etc/caddy/Caddyfile
-            echo 1 > /coordination/generation
+            echo 1 > /coordination/reset-counter
             node server.mjs
         ports:
           - containerPort: 3000
