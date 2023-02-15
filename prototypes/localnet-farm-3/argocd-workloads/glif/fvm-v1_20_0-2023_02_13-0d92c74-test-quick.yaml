@@ -31,6 +31,14 @@ spec:
           - |
             #while true; do sleep 50; done
             (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            (
+              sleep 60
+              cp /coordination/reset-counter /tmp/my-reset-counter
+              while true; do
+                cat /coordination/reset-counter /tmp/my-reset-counter
+                sleep 60
+              done
+            ) &
             lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
         resources:
           requests:
@@ -64,14 +72,6 @@ spec:
         volumeMounts:
           - name: coordination
             mountPath: /coordination
-        livenessProbe:
-          exec:
-            command:
-            - cat
-            - /coordination/generation
-          initialDelaySeconds: 60
-          periodSeconds: 15
-          failureThreshold: 1
       - name: miner-1
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
@@ -94,14 +94,6 @@ spec:
         volumeMounts:
           - name: coordination
             mountPath: /coordination
-        livenessProbe:
-          exec:
-            command:
-            - cat
-            - /coordination/generation
-          initialDelaySeconds: 60
-          periodSeconds: 15
-          failureThreshold: 1
       - name: miner-2
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
