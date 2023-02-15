@@ -91,6 +91,17 @@ spec:
             memory: "2Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /coordination/generation
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          failureThreshold: 1
       - name: miner-2
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
