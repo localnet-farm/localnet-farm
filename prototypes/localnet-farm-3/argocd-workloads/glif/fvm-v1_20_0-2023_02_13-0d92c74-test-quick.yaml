@@ -61,6 +61,7 @@ spec:
             - /tmp/healthy
           initialDelaySeconds: 60
           periodSeconds: 15
+          terminationGracePeriodSeconds: 1
       - name: miner-1
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
