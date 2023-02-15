@@ -10,6 +10,7 @@ spec:
         autoscaling.knative.dev/scale-to-zero-pod-retention-period: "60m"
     spec:
       containerConcurrency: 0
+      timeoutSeconds: 60
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -43,13 +44,21 @@ spec:
         volumeMounts:
           - name: coordination
             mountPath: /coordination
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /coordination/generation
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          failureThreshold: 1
       - name: gateway
         image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
         command: [ bash, -c ]
         args:
           - |
             caddy start --config /etc/caddy/Caddyfile
-            touch /tmp/healthy
+            echo 1 > /coordination/generation
             node server.mjs
         ports:
           - containerPort: 3000
@@ -63,14 +72,6 @@ spec:
         volumeMounts:
           - name: coordination
             mountPath: /coordination
-        livenessProbe:
-          exec:
-            command:
-            - cat
-            - /tmp/healthy
-          initialDelaySeconds: 60
-          periodSeconds: 15
-          failureThreshold: 1
       - name: miner-1
         image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:3d2763ee715a3a86e17ba346984030462d5fc6092309117fbd0b557c02435df1
         command: [ bash, -c ]
