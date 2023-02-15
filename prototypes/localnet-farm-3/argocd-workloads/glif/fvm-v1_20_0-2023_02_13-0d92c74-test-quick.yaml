@@ -44,6 +44,14 @@ spec:
         volumeMounts:
           - name: coordination
             mountPath: /coordination
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /coordination/generation
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          failureThreshold: 1
       - name: gateway
         image: ghcr.io/jimpick/localnet-farm-gateway@sha256:a59e27b2aa1ab8c8deb4b448061fedc669eaf75e78e7fd1471931414f8c4e13b
         command: [ bash, -c ]
