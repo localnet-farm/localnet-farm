@@ -32,12 +32,13 @@ spec:
             #while true; do sleep 50; done
             (cd ~/.lotus-local-net; python3 -m http.server 11001) &
             (
-              sleep 60
+              sleep 30 
               MY_COUNTER=$(cat /coordination/reset-counter)
               while true; do
                 COUNTER=$(cat /coordination/reset-counter)
                 echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
                 if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing node"
                   kill $(pidof lotus)
                 fi
                 sleep 60
@@ -82,6 +83,20 @@ spec:
         args:
           - |
             #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing miner"
+                  kill $(pidof lotus-miner)
+                fi
+                sleep 60
+              done
+            ) &
             lotus-miner run --nosync
         env:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
@@ -110,6 +125,19 @@ spec:
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
             #while true; do sleep 50; done
             lotus-miner init --owner $OWNER --nosync --sector-size 2048
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing miner"
+                  kill $(pidof lotus-miner)
+                fi
+                sleep 60
+              done
+            ) &
             lotus-miner run --nosync --miner-api 2346
         env:
           - name: LOTUS_MINER_PATH
