@@ -40,6 +40,8 @@ spec:
                 if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
                   echo "Reset requested -- Killing node"
                   kill $(pidof lotus)
+                  sleep 15
+                  kill -9 $(pidof lotus)
                 fi
                 sleep 60
               done
@@ -93,6 +95,8 @@ spec:
                 if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
                   echo "Reset requested -- Killing miner"
                   kill $(pidof lotus-miner)
+                  sleep 15
+                  kill -9 $(pidof lotus-miner)
                 fi
                 sleep 60
               done
@@ -134,6 +138,8 @@ spec:
                 if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
                   echo "Reset requested -- Killing miner"
                   kill $(pidof lotus-miner)
+                  sleep 15
+                  kill -9 $(pidof lotus-miner)
                 fi
                 sleep 60
               done
