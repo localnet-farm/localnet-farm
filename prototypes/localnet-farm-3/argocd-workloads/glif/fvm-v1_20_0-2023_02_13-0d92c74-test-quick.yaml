@@ -60,7 +60,7 @@ spec:
           - name: coordination
             mountPath: /coordination
       - name: gateway
-        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:01bfc85bc693640395033b0ce3c478abef32ddd4bf3babce8a54a76f505ef98b
+        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:b1711408bb27ec94857524e229d271f91524d6d7f51725d40896702ceb033bbf
         env:
           - name: RESET_COUNTER
             value: /coordination/reset-counter
