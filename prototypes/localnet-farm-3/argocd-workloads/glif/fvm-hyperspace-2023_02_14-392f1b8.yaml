@@ -1,0 +1,164 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: glif-fvm-hyperspace-20230214-392f1b8
+  namespace: quick
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "60m"
+    spec:
+      containerConcurrency: 0
+      timeoutSeconds: 60
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      volumes:
+        - name: coordination
+          emptyDir: {}
+      containers:
+      - name: node
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:dae51f6fc86f04d786ce37fc6a612a198262905971a187637c084c9fcc4210d7
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing node"
+                  kill $(pidof lotus)
+                  sleep 15
+                  kill -9 $(pidof lotus)
+                fi
+                sleep 60
+              done
+            ) &
+            lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: gateway
+        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:b1711408bb27ec94857524e229d271f91524d6d7f51725d40896702ceb033bbf
+        env:
+          - name: RESET_COUNTER
+            value: /coordination/reset-counter
+        command: [ bash, -c ]
+        args:
+          - |
+            caddy start --config /etc/caddy/Caddyfile
+            echo 1 > /coordination/reset-counter
+            node server.mjs
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: miner-1
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:dae51f6fc86f04d786ce37fc6a612a198262905971a187637c084c9fcc4210d7
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing miner"
+                  kill $(pidof lotus-miner)
+                  sleep 15
+                  kill -9 $(pidof lotus-miner)
+                fi
+                sleep 60
+              done
+            ) &
+            lotus-miner run --nosync
+        env:
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: miner-2
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:dae51f6fc86f04d786ce37fc6a612a198262905971a187637c084c9fcc4210d7
+        command: [ bash, -c ]
+        args:
+          - |
+            lotus wait-api
+            mkdir ~/.lotus-miner-local-net-2
+            export OWNER=$(lotus wallet default)
+            echo Owner: $OWNER
+            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
+            #while true; do sleep 50; done
+            lotus-miner init --owner $OWNER --nosync --sector-size 2048
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing miner"
+                  kill $(pidof lotus-miner)
+                  sleep 15
+                  kill -9 $(pidof lotus-miner)
+                fi
+                sleep 60
+              done
+            ) &
+            lotus-miner run --nosync --miner-api 2346
+        env:
+          - name: LOTUS_MINER_PATH
+            value: ~/.lotus-miner-local-net-2
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
