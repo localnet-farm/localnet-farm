@@ -7,7 +7,7 @@ spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "10m"
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "5m"
     spec:
       containerConcurrency: 0
       timeoutSeconds: 60
@@ -49,13 +49,13 @@ spec:
             lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1000m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
           limits:
-            memory: "2Gi"
-            cpu: "1000m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
         volumeMounts:
           - name: coordination
             mountPath: /coordination
@@ -110,13 +110,13 @@ spec:
             value: "0h0m30s"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1000m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
           limits:
-            memory: "2Gi"
-            cpu: "1000m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
         volumeMounts:
           - name: coordination
             mountPath: /coordination
@@ -155,10 +155,10 @@ spec:
             value: "0h0m30s"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "1000m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
           limits:
-            memory: "2Gi"
-            cpu: "1000m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
