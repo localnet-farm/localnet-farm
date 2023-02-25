@@ -110,9 +110,9 @@ spec:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
           - name: LOTUS_SEALING_BATCHPRECOMMITS
-            value: false
+            value: "false"
           - name: LOTUS_SEALING_AGGREGATECOMMITS
-            value: false
+            value: "false"
         resources:
           requests:
             memory: "2Gi"
@@ -162,9 +162,9 @@ spec:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
           - name: LOTUS_SEALING_BATCHPRECOMMITS
-            value: false
+            value: "false"
           - name: LOTUS_SEALING_AGGREGATECOMMITS
-            value: false
+            value: "false"
         resources:
           requests:
             memory: "2Gi"
