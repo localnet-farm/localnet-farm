@@ -138,8 +138,16 @@ spec:
             #while true; do sleep 50; done
             #echo "Sleeping for 2 minutes"
             #sleep 120
-            lotus wait-api
-            timeout 5m lotus-miner init --owner $OWNER --nosync --sector-size 2048
+            set -x
+            while true; do
+              lotus wait-api --timeout 3s
+              if [ "$?" = "0" ]; then
+                break
+              fi
+              sleep 30
+            done
+            sleep 30
+            timeout 5m lotus-miner init --nosync --owner $OWNER --sector-size 2048
             (
               sleep 30 
               MY_COUNTER=$(cat /coordination/reset-counter)
