@@ -87,6 +87,7 @@ spec:
         command: [ bash, -c ]
         args:
           - |
+            set -euo pipefail
             #while true; do sleep 50; done
             (cd ~/.lotus-local-net; python3 -m http.server 11001) &
             (
@@ -108,6 +109,10 @@ spec:
         env:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
+          - name: LOTUS_SEALING_BATCHPRECOMMITS
+            value: false
+          - name: LOTUS_SEALING_AGGREGATECOMMITS
+            value: false
         resources:
           requests:
             memory: "2Gi"
@@ -125,12 +130,15 @@ spec:
         command: [ bash, -c ]
         args:
           - |
+            set -euo pipefail
             lotus wait-api
             mkdir ~/.lotus-miner-local-net-2
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
             #while true; do sleep 50; done
+            echo "Sleeping for 2 minutes"
+            sleep 120
             lotus-miner init --owner $OWNER --nosync --sector-size 2048
             (
               sleep 30 
@@ -153,6 +161,10 @@ spec:
             value: ~/.lotus-miner-local-net-2
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
+          - name: LOTUS_SEALING_BATCHPRECOMMITS
+            value: false
+          - name: LOTUS_SEALING_AGGREGATECOMMITS
+            value: false
         resources:
           requests:
             memory: "2Gi"
