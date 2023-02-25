@@ -167,7 +167,10 @@ spec:
                 sleep 30
               done
               sleep 30
-              for `seq 1 3`; do lotus-miner sectors pledge; done
+              for f in `seq 1 3`; do
+                echo $f
+                lotus-miner sectors pledge
+              done
             ) &
             lotus-miner run --nosync --miner-api 2346
         env:
