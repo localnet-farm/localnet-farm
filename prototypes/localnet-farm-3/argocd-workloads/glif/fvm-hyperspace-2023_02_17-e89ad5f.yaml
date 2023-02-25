@@ -131,7 +131,6 @@ spec:
         args:
           - |
             set -euo pipefail
-            lotus wait-api
             mkdir ~/.lotus-miner-local-net-2
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
@@ -139,6 +138,7 @@ spec:
             #while true; do sleep 50; done
             echo "Sleeping for 2 minutes"
             sleep 120
+            lotus wait-api
             lotus-miner init --owner $OWNER --nosync --sector-size 2048
             (
               sleep 30 
@@ -156,8 +156,11 @@ spec:
               done
             ) &
             (
+              set +e
+              set -x
+              sleep 60
               while true; do
-                lotus-miner wait-api
+                lotus-miner wait-api --timeout 3s
                 if [ "$?" = "0" ]; then
                   break
                 fi
