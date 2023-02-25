@@ -180,7 +180,11 @@ spec:
                 lotus-miner sectors pledge
               done
             ) &
-            lotus-miner run --nosync --miner-api 2346
+            while true; do
+              lotus-miner run --nosync --miner-api 2346 || true
+              echo "Restarting..."
+              sleep 30
+            done
         env:
           - name: LOTUS_MINER_PATH
             value: ~/.lotus-miner-local-net-2
