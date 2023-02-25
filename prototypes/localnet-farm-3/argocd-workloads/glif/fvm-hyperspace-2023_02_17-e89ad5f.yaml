@@ -115,11 +115,11 @@ spec:
             value: "false"
         resources:
           requests:
-            memory: "2Gi"
+            memory: "8Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
-            memory: "2Gi"
+            memory: "8Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
         volumeMounts:
@@ -196,11 +196,11 @@ spec:
             value: "false"
         resources:
           requests:
-            memory: "2Gi"
+            memory: "8Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
-            memory: "2Gi"
+            memory: "8Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
         volumeMounts:
