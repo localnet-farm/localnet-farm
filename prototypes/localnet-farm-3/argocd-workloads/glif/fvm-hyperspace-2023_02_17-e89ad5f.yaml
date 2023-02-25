@@ -199,3 +199,6 @@ spec:
             memory: "2Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
