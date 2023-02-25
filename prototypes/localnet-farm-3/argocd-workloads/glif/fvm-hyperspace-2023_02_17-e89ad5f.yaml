@@ -132,9 +132,6 @@ spec:
           - |
             set -euo pipefail
             mkdir ~/.lotus-miner-local-net-2
-            export OWNER=$(lotus wallet default)
-            echo Owner: $OWNER
-            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
             #while true; do sleep 50; done
             #echo "Sleeping for 2 minutes"
             #sleep 120
@@ -147,6 +144,9 @@ spec:
               sleep 30
             done
             sleep 30
+            export OWNER=$(lotus wallet default)
+            echo Owner: $OWNER
+            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
             timeout 5m lotus-miner init --nosync --owner $OWNER --sector-size 2048
             (
               sleep 30 
