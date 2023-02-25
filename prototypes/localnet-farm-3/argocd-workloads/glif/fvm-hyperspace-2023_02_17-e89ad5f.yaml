@@ -136,10 +136,10 @@ spec:
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
             #while true; do sleep 50; done
-            echo "Sleeping for 2 minutes"
-            sleep 120
+            #echo "Sleeping for 2 minutes"
+            #sleep 120
             lotus wait-api
-            lotus-miner init --owner $OWNER --nosync --sector-size 2048
+            timeout 5m lotus-miner init --owner $OWNER --nosync --sector-size 2048
             (
               sleep 30 
               MY_COUNTER=$(cat /coordination/reset-counter)
