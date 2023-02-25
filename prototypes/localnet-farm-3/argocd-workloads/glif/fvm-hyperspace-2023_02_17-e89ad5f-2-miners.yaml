@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: glif-fvm-hyperspace-20230217-e89ad5f
+  name: glif-fvm-hyperspace-20230217-e89ad5f-2-miners
   namespace: quick
 spec:
   template:
@@ -121,11 +121,94 @@ spec:
             value: "1"
         resources:
           requests:
-            memory: "2Gi"
+            memory: "4Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
           limits:
-            memory: "2Gi"
+            memory: "4Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: miner-2
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:55478d6fdf3d8b3f83a08d78d7e2c9e4d1524c70e42cbb85926cff42d6622cb3
+        command: [ bash, -c ]
+        args:
+          - |
+            set -euo pipefail
+            mkdir ~/.lotus-miner-local-net-2
+            #while true; do sleep 50; done
+            #echo "Sleeping for 2 minutes"
+            #sleep 120
+            set -x
+            while true; do
+              lotus wait-api --timeout 3s
+              if [ "$?" = "0" ]; then
+                break
+              fi
+              sleep 30
+            done
+            sleep 30
+            export OWNER=$(lotus wallet default)
+            echo Owner: $OWNER
+            echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
+            timeout 5m lotus-miner init --nosync --owner $OWNER --sector-size 2048
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing miner"
+                  kill $(pidof lotus-miner)
+                  sleep 15
+                  kill -9 $(pidof lotus-miner)
+                fi
+                sleep 60
+              done
+            ) &
+            (
+              set +e
+              set -x
+              sleep 60
+              while true; do
+                lotus-miner wait-api --timeout 3s
+                if [ "$?" = "0" ]; then
+                  break
+                fi
+                sleep 30
+              done
+              sleep 30
+              for f in `seq 1 3`; do
+                echo $f
+                lotus-miner sectors pledge
+              done
+            ) &
+            while true; do
+              lotus-miner run --nosync --miner-api 2346 || true
+              echo "Restarting..."
+              sleep 30
+            done
+        env:
+          - name: LOTUS_MINER_PATH
+            value: ~/.lotus-miner-local-net-2
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+          - name: LOTUS_SEALING_BATCHPRECOMMITS
+            value: "false"
+          - name: LOTUS_SEALING_AGGREGATECOMMITS
+            value: "false"
+          - name: LOTUS_SEALING_MAXSEALINGSECTORS
+            value: "1"
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "4Gi"
             cpu: "400m"
             ephemeral-storage: "2Gi"
         volumeMounts:
