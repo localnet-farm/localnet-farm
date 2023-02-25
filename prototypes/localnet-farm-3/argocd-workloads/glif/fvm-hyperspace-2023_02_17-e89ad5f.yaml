@@ -155,6 +155,17 @@ spec:
                 sleep 60
               done
             ) &
+            (
+              while true; do
+                lotus-miner wait-api
+                if [ "$?" = "0" ]; then
+                  break
+                fi
+                sleep 30
+              done
+              sleep 30
+              for `seq 1 3`; do lotus-miner sectors pledge; done
+            ) &
             lotus-miner run --nosync --miner-api 2346
         env:
           - name: LOTUS_MINER_PATH
