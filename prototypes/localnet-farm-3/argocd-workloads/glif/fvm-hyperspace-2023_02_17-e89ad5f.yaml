@@ -10,7 +10,7 @@ spec:
         autoscaling.knative.dev/scale-to-zero-pod-retention-period: "60m"
     spec:
       containerConcurrency: 0
-      timeoutSeconds: 60
+      timeoutSeconds: 120
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
