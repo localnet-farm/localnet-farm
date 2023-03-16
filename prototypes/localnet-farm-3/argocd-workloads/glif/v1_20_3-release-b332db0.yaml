@@ -2,7 +2,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: glif-v1-20-3-release-b332db0
-  namespace: quick
+  namespace: default
 spec:
   template:
     metadata:
@@ -29,7 +29,6 @@ spec:
         command: [ bash, -c ]
         args:
           - |
-            #while true; do sleep 50; done
             (cd ~/.lotus-local-net; python3 -m http.server 11001) &
             (
               sleep 30 
@@ -49,13 +48,13 @@ spec:
             lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "400m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
           limits:
-            memory: "2Gi"
-            cpu: "400m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
         volumeMounts:
           - name: coordination
             mountPath: /coordination
@@ -88,7 +87,6 @@ spec:
         args:
           - |
             set -euo pipefail
-            #while true; do sleep 50; done
             (cd ~/.lotus-local-net; python3 -m http.server 11001) &
             (
               sleep 30 
@@ -121,13 +119,13 @@ spec:
             value: "1"
         resources:
           requests:
-            memory: "2Gi"
-            cpu: "400m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
           limits:
-            memory: "2Gi"
-            cpu: "400m"
-            ephemeral-storage: "2Gi"
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "4Gi"
         volumeMounts:
           - name: coordination
             mountPath: /coordination
