@@ -1,0 +1,133 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: glif-v1-20-3-release-b332db0
+  namespace: quick
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "60m"
+    spec:
+      containerConcurrency: 0
+      timeoutSeconds: 120
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+      volumes:
+        - name: coordination
+          emptyDir: {}
+      containers:
+      - name: node
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:64c4859612d4dd0f054e083d0c203cebc963915095ad6f04ccf186a08c1a20fe
+        command: [ bash, -c ]
+        args:
+          - |
+            #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing node"
+                  kill $(pidof lotus)
+                  sleep 15
+                  kill -9 $(pidof lotus)
+                fi
+                sleep 60
+              done
+            ) &
+            lotus daemon --lotus-make-genesis=devgen.car --genesis-template=localnet.json --bootstrap=false
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: gateway
+        image: ghcr.io/jimpick/localnet-farm-gateway@sha256:b1711408bb27ec94857524e229d271f91524d6d7f51725d40896702ceb033bbf
+        env:
+          - name: RESET_COUNTER
+            value: /coordination/reset-counter
+        command: [ bash, -c ]
+        args:
+          - |
+            caddy start --config /etc/caddy/Caddyfile
+            echo 1 > /coordination/reset-counter
+            node server.mjs
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
+      - name: miner-1
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:64c4859612d4dd0f054e083d0c203cebc963915095ad6f04ccf186a08c1a20fe
+        command: [ bash, -c ]
+        args:
+          - |
+            set -euo pipefail
+            #while true; do sleep 50; done
+            (cd ~/.lotus-local-net; python3 -m http.server 11001) &
+            (
+              sleep 30 
+              MY_COUNTER=$(cat /coordination/reset-counter)
+              while true; do
+                COUNTER=$(cat /coordination/reset-counter)
+                echo "Checking reset counter: $COUNTER (Mine: $MY_COUNTER)"
+                if [ "$COUNTER" -ne "$MY_COUNTER" ]; then
+                  echo "Reset requested -- Killing miner"
+                  kill $(pidof lotus-miner)
+                  sleep 15
+                  kill -9 $(pidof lotus-miner)
+                fi
+                sleep 60
+              done
+            ) &
+            while true; do
+              lotus-miner run --nosync || true
+              echo "Restarting..."
+              sleep 30
+            done
+        env:
+          - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
+            value: "0h0m30s"
+          - name: LOTUS_SEALING_BATCHPRECOMMITS
+            value: "false"
+          - name: LOTUS_SEALING_AGGREGATECOMMITS
+            value: "false"
+          - name: LOTUS_SEALING_MAXSEALINGSECTORS
+            value: "1"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "2Gi"
+            cpu: "400m"
+            ephemeral-storage: "2Gi"
+        volumeMounts:
+          - name: coordination
+            mountPath: /coordination
