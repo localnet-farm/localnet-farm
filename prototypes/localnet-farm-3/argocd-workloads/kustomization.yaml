@@ -33,5 +33,7 @@ resources:
 - glif/v1_20_3-release-b332db0-actions.yaml
 - wfil/v1_20_3-release-b332db0.yaml
 - wfil/v1_20_3-release-b332db0-actions.yaml
+- wfil/v1_20_4-release-5f24a81.yaml
+- wfil/v1_20_4-release-5f24a81-actions.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
