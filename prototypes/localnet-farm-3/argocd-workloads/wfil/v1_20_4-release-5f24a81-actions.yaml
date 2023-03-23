@@ -25,7 +25,7 @@ spec:
           emptyDir: {}
       containers:
       - name: node
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:103331442629ed0e3f14b9da66bdf74535ef38cd6781fd4bc5845ca8107d7693
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:a3b7de67a892df6c5e123b3d2b63b877af80088ffdb62256014b63ec695d3542
         command: [ bash, -c ]
         args:
           - |
@@ -83,7 +83,7 @@ spec:
           - name: coordination
             mountPath: /coordination
       - name: miner-1
-        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:103331442629ed0e3f14b9da66bdf74535ef38cd6781fd4bc5845ca8107d7693
+        image: ghcr.io/jimpick/lotus-fvm-localnet-python@sha256:a3b7de67a892df6c5e123b3d2b63b877af80088ffdb62256014b63ec695d3542
         command: [ bash, -c ]
         args:
           - |
