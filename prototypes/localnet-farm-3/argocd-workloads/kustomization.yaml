@@ -29,6 +29,8 @@ resources:
 - glif/fvm-hyperspace-2023_02_17-e89ad5f-2-miners.yaml
 - glif/fvm-v1_20_0-release-33bec58.yaml
 - glif/fvm-v1_20_0-release-33bec58-actions.yaml
+- glif/v1_20_4-release-5f24a81.yaml
+- glif/v1_20_4-release-5f24a81-actions.yaml
 - glif/v1_20_3-release-b332db0.yaml
 - glif/v1_20_3-release-b332db0-actions.yaml
 - wfil/v1_20_3-release-b332db0.yaml
