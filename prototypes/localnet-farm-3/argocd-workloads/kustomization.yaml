@@ -33,6 +33,8 @@ resources:
 - glif/v1_20_4-release-5f24a81-actions.yaml
 - glif/v1_20_3-release-b332db0.yaml
 - glif/v1_20_3-release-b332db0-actions.yaml
+- glif/v1_23_0-release-d1d4b35.yaml
+- glif/v1_23_0-release-d1d4b35-actions.yaml
 - wfil/v1_20_3-release-b332db0.yaml
 - wfil/v1_20_3-release-b332db0-actions.yaml
 - wfil/v1_20_4-release-5f24a81.yaml
