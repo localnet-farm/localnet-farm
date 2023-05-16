@@ -404,6 +404,15 @@ resource "kubernetes_service_account" "service-account" {
       "eks.amazonaws.com/sts-regional-endpoints" = "true"
     }
   }
+  secret {
+    name = "${kubernetes_secret.localnet_farm.metadata.0.name}"
+  }
+}
+
+resource "kubernetes_secret" "localnet_farm" {
+  metadata {
+    name = "localnet-farm-secret"
+  }
 }
 
 resource "helm_release" "lb" {
