@@ -233,7 +233,7 @@ resource "null_resource" "modify_kube_dns" {
 
     # We are maintaing the existing kube-dns service and annotating it for Helm to assume control
     command = <<-EOT
-      echo "Setting implicit dependency on ${module.eks.fargate_profiles["kube_system"].fargate_profile_pod_execution_role_arn}"
+      echo "Setting implicit dependency on ${module.eks.fargate_profiles["default"].fargate_profile_pod_execution_role_arn}"
       curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
       ./kubectl --namespace kube-system annotate --overwrite service kube-dns meta.helm.sh/release-name=coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
       ./kubectl --namespace kube-system annotate --overwrite service kube-dns meta.helm.sh/release-namespace=kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)
