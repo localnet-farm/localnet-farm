@@ -1,5 +1,6 @@
 resources:
 - hello.yaml
+- hello-quick.yaml
 - glif/v1_23_0-release-d1d4b35.yaml
 - glif/v1_23_0-release-d1d4b35-actions.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
