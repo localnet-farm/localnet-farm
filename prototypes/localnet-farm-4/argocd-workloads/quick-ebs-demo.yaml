@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: quick-ebs-demo
+  name: quick-ebs-demo-claim
   namespace: quick  
 spec:
   accessModes:
@@ -35,4 +35,4 @@ spec:
   volumes:
   - name: persistent-storage
     persistentVolumeClaim:
-      claimName: ebs-claim
+      claimName: quick-ebs-demo-claim
