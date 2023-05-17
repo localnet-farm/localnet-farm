@@ -595,7 +595,7 @@ spec:
     - name: https
       port: 443
       protocol: TCP
-      targetPort: 8443
+      targetPort: 8080
   selector:
     app: 3scale-kourier-gateway
   type: LoadBalancer
