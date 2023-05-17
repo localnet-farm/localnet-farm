@@ -1,4 +1,5 @@
 resources:
+- namespace-quick.yaml
 - hello.yaml
 - hello-quick.yaml
 - glif/v1_23_0-release-d1d4b35.yaml
