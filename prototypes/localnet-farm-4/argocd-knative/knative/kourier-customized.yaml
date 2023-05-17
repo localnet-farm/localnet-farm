@@ -356,6 +356,15 @@ spec:
       labels:
         app: net-kourier-controller
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       containers:
         - image: gcr.io/knative-releases/knative.dev/net-kourier/cmd/kourier@sha256:ceded8cb8cf62f5bc391eaefa5faad81fede5c953c84e153397b574216da9d07
           name: controller
@@ -400,10 +409,10 @@ spec:
           resources:
             requests:
               cpu: 200m
-              memory: 200Mi
+              memory: 60Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 200m
+              memory: 60Mi
       restartPolicy: Always
       serviceAccountName: net-kourier
 ---
@@ -473,6 +482,15 @@ spec:
         prometheus.io/port: "9000"
         prometheus.io/path: "/stats/prometheus"
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       containers:
         - args:
             - --base-id 1
@@ -541,10 +559,10 @@ spec:
           resources:
             requests:
               cpu: 200m
-              memory: 200Mi
+              memory: 60Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 200m
+              memory: 60Mi
       volumes:
         - name: config-volume
           configMap:
@@ -561,6 +579,13 @@ metadata:
     app.kubernetes.io/component: net-kourier
     app.kubernetes.io/version: "1.10.0"
     app.kubernetes.io/name: knative-serving
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-west-2:898544381806:certificate/20da3ee5-9399-41c2-992c-1cb79bf16b74
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   ports:
     - name: http2
@@ -594,7 +619,8 @@ spec:
     - name: https
       port: 443
       protocol: TCP
-      targetPort: 8444
+      #targetPort: 8444
+      targetPort: 8080
   selector:
     app: 3scale-kourier-gateway
   type: ClusterIP

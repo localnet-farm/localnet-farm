@@ -4883,6 +4883,8 @@ metadata:
   annotations:
     knative.dev/example-checksum: "e7973912"
 data:
+  cluster-4.localnet.farm: |
+
   _example: |
     ################################
     #                              #
@@ -5195,6 +5197,9 @@ metadata:
   annotations:
     knative.dev/example-checksum: "d3565159"
 data:
+  kubernetes.podspec-affinity: "enabled"
+  kubernetes.podspec-persistent-volume-claim: "enabled"
+  kubernetes.podspec-persistent-volume-write: "enabled"
   _example: |-
     ################################
     #                              #
@@ -5400,6 +5405,7 @@ metadata:
   annotations:
     knative.dev/example-checksum: "aa3813a8"
 data:
+  ingress.class: "kourier.ingress.networking.knative.dev"
   _example: |
     ################################
     #                              #
@@ -6066,6 +6072,15 @@ spec:
         app.kubernetes.io/version: "1.10.1"
     spec:
       serviceAccountName: controller
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       containers:
         - name: activator
           # This is the Go import path for the binary that is containerized
@@ -6078,8 +6093,8 @@ spec:
               cpu: 300m
               memory: 60Mi
             limits:
-              cpu: 1000m
-              memory: 600Mi
+              cpu: 300m
+              memory: 60Mi
           env:
             # Run Activator with GC collection when newly generated memory is 500%.
             - name: GOGC
@@ -6224,14 +6239,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: autoscaler
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       serviceAccountName: controller
       containers:
         - name: autoscaler
@@ -6243,8 +6258,8 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 1000m
-              memory: 1000Mi
+              cpu: 100m
+              memory: 100Mi
           env:
             - name: POD_NAME
               valueFrom:
@@ -6360,14 +6375,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: controller
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       serviceAccountName: controller
       containers:
         - name: controller
@@ -6379,8 +6394,8 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 1000m
-              memory: 1000Mi
+              cpu: 100m
+              memory: 100Mi
           env:
             - name: POD_NAME
               valueFrom:
@@ -6490,14 +6505,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: domain-mapping
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       serviceAccountName: controller
       containers:
         - name: domain-mapping
@@ -6509,8 +6524,8 @@ spec:
               cpu: 30m
               memory: 40Mi
             limits:
-              cpu: 300m
-              memory: 400Mi
+              cpu: 30m
+              memory: 40Mi
           env:
             - name: SYSTEM_NAMESPACE
               valueFrom:
@@ -6596,14 +6611,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: domainmapping-webhook
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64      
       serviceAccountName: controller
       containers:
         - name: domainmapping-webhook
@@ -6615,8 +6630,8 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 100m
+              memory: 100Mi
           env:
             - name: POD_NAME
               valueFrom:
@@ -6797,14 +6812,14 @@ spec:
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
       affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: webhook
-                topologyKey: kubernetes.io/hostname
-              weight: 100
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64 
       serviceAccountName: controller
       containers:
         - name: webhook
@@ -6816,8 +6831,8 @@ spec:
               cpu: 100m
               memory: 100Mi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 100m
+              memory: 100Mi
           env:
             - name: POD_NAME
               valueFrom:
