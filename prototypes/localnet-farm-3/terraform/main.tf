@@ -128,7 +128,7 @@ module "eks" {
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
       # subnet_ids = [module.vpc.private_subnets[1]]
-      subnet_ids = []
+      #subnet_ids = []
 
       tags = {
 				lf-cluster = local.name
@@ -150,7 +150,7 @@ module "eks" {
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
       #subnet_ids = [module.vpc.private_subnets[1]]
-      subnet_ids = []
+      #subnet_ids = []
 
       tags = {
         lf-cluster = local.name
