@@ -43,9 +43,15 @@ module "eks" {
   #cluster_additional_security_group_ids = [aws_security_group.eks.id]
 
   cluster_addons = {
-    kube-proxy = {}
-    vpc-cni    = {}
-    aws-ebs-csi-driver = {}
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni    = {
+      most_recent = true
+    }
+    aws-ebs-csi-driver = {
+      most_recent = true
+    }
   }
 
   cluster_encryption_config = [{
@@ -123,6 +129,12 @@ module "eks" {
 
       #disk_size = 80
 
+      # https://www.reddit.com/r/Terraform/comments/znomk4/ebs_csi_driver_entirely_from_terraform_on_aws_eks/
+      # https://github.com/ElliotG/coder-oss-tf/blob/main/aws-eks/main.tf
+      # Needed by the aws-ebs-csi-driver
+      iam_role_additional_policies = {
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      }
 		}
 	}
 
