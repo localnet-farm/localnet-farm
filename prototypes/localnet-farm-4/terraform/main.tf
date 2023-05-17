@@ -45,6 +45,7 @@ module "eks" {
   cluster_addons = {
     kube-proxy = {}
     vpc-cni    = {}
+    aws-ebs-csi-driver = {}
   }
 
   cluster_encryption_config = [{
@@ -455,3 +456,25 @@ resource "helm_release" "lb" {
   }
 }
 
+# IRSA role for EBS
+# https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
+# https://github.com/terraform-aws-modules/terraform-aws-iam/blob/master/examples/iam-role-for-service-accounts-eks/main.tf
+# https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+
+#module "ebs_csi_irsa_role" {
+#  source = "../../modules/iam-role-for-service-accounts-eks"
+#  source  = "terraform-aws-modules/eks/aws"
+#  version = "~> 18.0"
+#
+#  #role_name             = "ebs-csi"
+#  attach_ebs_csi_policy = true
+#
+#  oidc_providers = {
+#    ex = {
+#      provider_arn               = module.eks.oidc_provider_arn
+#      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+#    }
+#  }
+#
+#  tags = local.tags
+#}
