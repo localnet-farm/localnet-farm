@@ -12,9 +12,9 @@ spec:
       containerConcurrency: 0
       containers:
       - name: webrtc-star
-        image: ghcr.io/hexcamp/hexcamp-webrtc-star@sha256:4d782fb9e367eb2ea6006535bb0f691aad2b854bc9851d2784d46df60869cc49
+        image: ghcr.io/hexcamp/hexcamp-webrtc-star@sha256:465ff27133bac988c688dce03119d287a6c28db062ff3bc878bb3de103aeab9c
         ports:
-          - containerPort: 3000
+          - containerPort: 9090
         resources:
           requests:
             memory: "200Mi"
