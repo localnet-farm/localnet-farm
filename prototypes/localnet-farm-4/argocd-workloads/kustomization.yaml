@@ -6,6 +6,7 @@ resources:
 - quick-ebs-demo.yaml
 - glif/v1_23_0-release-d1d4b35.yaml
 - glif/v1_23_0-release-d1d4b35-actions.yaml
+- glif/v1_23_0-release-d1d4b35-2-miners.yaml
 - hexcamp/hexcamp-webrtc-star.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
