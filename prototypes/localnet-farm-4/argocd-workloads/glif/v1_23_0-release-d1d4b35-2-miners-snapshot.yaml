@@ -106,11 +106,7 @@ spec:
                 sleep 60
               done
             ) &
-            while true; do
-              lotus-miner run --nosync || true
-              echo "Restarting..."
-              sleep 30
-            done
+            lotus-miner run --nosync
         env:
           - name: LOTUS_DEALMAKING_PUBLISHMSGPERIOD
             value: "0h0m30s"
@@ -139,7 +135,9 @@ spec:
           - |
             set -euo pipefail
             mkdir ~/.lotus-miner-local-net-2
-            while true; do sleep 50; done
+            curl -O https://localnet.farm/glif/lotus-miner-local-net-2.tar.gz
+            tar xzvf lotus-miner-local-net-2.tar.gz
+            #while true; do sleep 50; done
             #echo "Sleeping for 2 minutes"
             #sleep 120
             set -x
@@ -154,7 +152,7 @@ spec:
             export OWNER=$(lotus wallet default)
             echo Owner: $OWNER
             echo LOTUS_MINER_PATH: $LOTUS_MINER_PATH
-            timeout 5m lotus-miner init --nosync --owner $OWNER --sector-size 2048
+            #timeout 5m lotus-miner init --nosync --owner $OWNER --sector-size 2048
             (
               sleep 30 
               MY_COUNTER=$(cat /coordination/reset-counter)
@@ -170,28 +168,24 @@ spec:
                 sleep 60
               done
             ) &
-            (
-              set +e
-              set -x
-              sleep 60
-              while true; do
-                lotus-miner wait-api --timeout 3s
-                if [ "$?" = "0" ]; then
-                  break
-                fi
-                sleep 30
-              done
-              sleep 30
-              for f in `seq 1 3`; do
-                echo $f
-                lotus-miner sectors pledge
-              done
-            ) &
-            while true; do
-              lotus-miner run --nosync --miner-api 2346 || true
-              echo "Restarting..."
-              sleep 30
-            done
+            #(
+            #  set +e
+            #  set -x
+            #  sleep 60
+            #  while true; do
+            #    lotus-miner wait-api --timeout 3s
+            #    if [ "$?" = "0" ]; then
+            #      break
+            #    fi
+            #    sleep 30
+            #  done
+            #  sleep 30
+            #  for f in `seq 1 3`; do
+            #    echo $f
+            #    lotus-miner sectors pledge
+            #  done
+            #) &
+            lotus-miner run --nosync --miner-api 2346
         env:
           - name: LOTUS_MINER_PATH
             value: ~/.lotus-miner-local-net-2
