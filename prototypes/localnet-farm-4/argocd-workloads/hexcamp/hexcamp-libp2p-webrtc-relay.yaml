@@ -12,7 +12,10 @@ spec:
       containerConcurrency: 0
       containers:
       - name: webrtc-relay
-        image: ghcr.io/hexcamp/hexcamp-libp2p-webrtc-relay@sha256:66540b7374b4355f423ef8aef717d24580ed26602a27615d9118d875442c8df7
+        image: ghcr.io/hexcamp/hexcamp-libp2p-webrtc-relay@sha256:6db9294a45b8023bdb93633c9f9939a49aa1a727a2d55db322437a973aacde9b
+        env:
+          - name: ANNOUNCE
+            value: /dns4/hexcamp-libp2p-webrtc-relay.quick.cluster-4.localnet.farm/tcp/443/wss
         ports:
           - containerPort: 3000
         resources:
