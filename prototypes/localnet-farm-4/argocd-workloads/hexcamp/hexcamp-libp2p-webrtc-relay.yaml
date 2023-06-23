@@ -1,0 +1,24 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: hexcamp-libp2p-webrtc-relay
+  namespace: quick
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "15m"
+    spec:
+      containerConcurrency: 0
+      containers:
+      - name: webrtc-relay
+        image: ghcr.io/hexcamp/hexcamp-libp2p-webrtc-relay@sha256:66540b7374b4355f423ef8aef717d24580ed26602a27615d9118d875442c8df7
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "100m"
