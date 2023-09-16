@@ -97,12 +97,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: dex-cluster-auth
+  name: localnet-farm-core-team-read-all
   namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-knative-read-all
+  name: cluster-read-all
 subjects:
   - kind: Group
     name: "localnet-farm:core-team"
@@ -111,7 +111,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: dex-cluster-auth-pods-delete
+  name: localnet-farm-core-team-pods-delete
   namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -125,7 +125,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: dex-cluster-auth-knative-read
+  name: localnet-farm-core-team-knative-read
   namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
