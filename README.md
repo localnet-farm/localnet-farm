@@ -14,6 +14,15 @@ A series of cluster setups can be found in the prototypes directory. As newer cl
 
 * https://github.com/jimpick/localnet-farm/tree/main/prototypes
 
+## Kubernetes Access
+
+For users that have been granted access, it is possible to use the standard Kubernetes `kubectl` tool to list pods and services, exec into containers, and
+delete pods that are misbehaving.
+
+The login page is here:
+
+* https://login-localnet-farm.infra.hex.camp/
+
 ## Contact Info
 
 Send a message to `@Jim Pick` on the Filecoin Slack for more info.
