@@ -69,6 +69,32 @@ rules:
     - delete
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-knative-read-all
+  namespace: kube-system
+rules:
+- apiGroups:
+    - serving.knative.dev
+  resources:
+    - services
+    - revisions
+    - routes
+    - metrics
+    - podautoscalers
+    - images
+    - certificates
+    - clusterdomainclaims
+    - ingresses
+    - serverlessservices
+    - configurations
+    - domainmappings
+  verbs:
+    - get
+    - watch
+    - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: dex-cluster-auth
@@ -76,7 +102,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-read-all
+  name: cluster-knative-read-all
 subjects:
   - kind: Group
     name: "localnet-farm:core-team"
@@ -91,6 +117,20 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-pods-delete-all
+subjects:
+  - kind: Group
+    name: "localnet-farm:core-team"
+    apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dex-cluster-auth-knative-read
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-knative-read-all
 subjects:
   - kind: Group
     name: "localnet-farm:core-team"
