@@ -18,7 +18,7 @@ provider "aws" {
 
 locals {
   name            = "localnet-farm-5"
-  cluster_version = "1.28"
+  cluster_version = "1.26"
   region          = "us-west-2"
 
   tags = {
@@ -217,47 +217,47 @@ module "eks" {
 #}
 
 # Separate resource so that this is only ever executed once
-resource "null_resource" "remove_default_coredns_deployment" {
-  triggers = {}
+#resource "null_resource" "remove_default_coredns_deployment" {
+#  triggers = {}
+#
+#  provisioner "local-exec" {
+#    interpreter = ["/bin/bash", "-c"]
+#    environment = {
+#      KUBECONFIG = base64encode(local.kubeconfig)
+#    }
+#
+#    # We are removing the deployment provided by the EKS service and replacing it through the self-managed CoreDNS Helm addon
+#    # However, we are maintaing the existing kube-dns service and annotating it for Helm to assume control
+#    command = <<-EOT
+#      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
+#      ./kubectl --namespace kube-system delete deployment coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
+#    EOT
+#  }
+#}
 
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    environment = {
-      KUBECONFIG = base64encode(local.kubeconfig)
-    }
-
-    # We are removing the deployment provided by the EKS service and replacing it through the self-managed CoreDNS Helm addon
-    # However, we are maintaing the existing kube-dns service and annotating it for Helm to assume control
-    command = <<-EOT
-      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
-      ./kubectl --namespace kube-system delete deployment coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
-    EOT
-  }
-}
-
-resource "null_resource" "modify_kube_dns" {
-  triggers = {}
-
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    environment = {
-      KUBECONFIG = base64encode(local.kubeconfig)
-    }
-
-    # We are maintaing the existing kube-dns service and annotating it for Helm to assume control
-    command = <<-EOT
-      echo "Setting implicit dependency on ${module.eks.fargate_profiles["default"].fargate_profile_pod_execution_role_arn}"
-      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
-      ./kubectl --namespace kube-system annotate --overwrite service kube-dns meta.helm.sh/release-name=coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
-      ./kubectl --namespace kube-system annotate --overwrite service kube-dns meta.helm.sh/release-namespace=kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)
-      ./kubectl --namespace kube-system label --overwrite service kube-dns app.kubernetes.io/managed-by=Helm --kubeconfig <(echo $KUBECONFIG | base64 --decode)
-    EOT
-  }
-
-  depends_on = [
-    null_resource.remove_default_coredns_deployment
-  ]
-}
+#resource "null_resource" "modify_kube_dns" {
+#  triggers = {}
+#
+#  provisioner "local-exec" {
+#    interpreter = ["/bin/bash", "-c"]
+#    environment = {
+#      KUBECONFIG = base64encode(local.kubeconfig)
+#    }
+#
+#    # We are maintaing the existing kube-dns service and annotating it for Helm to assume control
+#    command = <<-EOT
+#      echo "Setting implicit dependency on ${module.eks.fargate_profiles["default"].fargate_profile_pod_execution_role_arn}"
+#      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
+#      ./kubectl --namespace kube-system annotate --overwrite service kube-dns meta.helm.sh/release-name=coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
+#      ./kubectl --namespace kube-system annotate --overwrite service kube-dns meta.helm.sh/release-namespace=kube-system --kubeconfig <(echo $KUBECONFIG | base64 --decode)
+#      ./kubectl --namespace kube-system label --overwrite service kube-dns app.kubernetes.io/managed-by=Helm --kubeconfig <(echo $KUBECONFIG | base64 --decode)
+#    EOT
+#  }
+#
+#  depends_on = [
+#    null_resource.remove_default_coredns_deployment
+#  ]
+#}
 
 ################################################################################
 # CoreDNS Helm Chart (self-managed)
