@@ -54,10 +54,10 @@ module "eks" {
     }
   }
 
-  cluster_encryption_config = [{
-    provider_key_arn = aws_kms_key.eks.arn
-    resources        = ["secrets"]
-  }]
+  #cluster_encryption_config = [{
+  #  provider_key_arn = aws_kms_key.eks.arn
+  #  resources        = ["secrets"]
+  #}]
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -132,9 +132,9 @@ module "eks" {
       # https://www.reddit.com/r/Terraform/comments/znomk4/ebs_csi_driver_entirely_from_terraform_on_aws_eks/
       # https://github.com/ElliotG/coder-oss-tf/blob/main/aws-eks/main.tf
       # Needed by the aws-ebs-csi-driver
-      iam_role_additional_policies = [
-        "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-      ]
+      iam_role_additional_policies = {
+        AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      }
 		}
 	}
 
