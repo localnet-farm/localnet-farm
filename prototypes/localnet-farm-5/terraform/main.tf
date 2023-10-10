@@ -263,47 +263,47 @@ module "eks" {
 # CoreDNS Helm Chart (self-managed)
 ################################################################################
 
-data "aws_eks_addon_version" "this" {
-  for_each = toset(["coredns"])
+#data "aws_eks_addon_version" "this" {
+#  for_each = toset(["coredns"])
+#
+#  addon_name         = each.value
+#  kubernetes_version = module.eks.cluster_version
+#  most_recent        = true
+#}
 
-  addon_name         = each.value
-  kubernetes_version = module.eks.cluster_version
-  most_recent        = true
-}
-
-resource "helm_release" "coredns" {
-  name             = "coredns"
-  namespace        = "kube-system"
-  create_namespace = false
-  description      = "CoreDNS is a DNS server that chains plugins and provides Kubernetes DNS Services"
-  chart            = "coredns"
-  version          = "1.19.4"
-  repository       = "https://coredns.github.io/helm"
-
-  # For EKS image repositories https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
-  values = [
-    <<-EOT
-      image:
-        repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/coredns
-        tag: ${data.aws_eks_addon_version.this["coredns"].version}
-      deployment:
-        name: coredns
-        annotations:
-          eks.amazonaws.com/compute-type: fargate
-      service:
-        name: kube-dns
-        annotations:
-          eks.amazonaws.com/compute-type: fargate
-      podAnnotations:
-        eks.amazonaws.com/compute-type: fargate
-      EOT
-  ]
-
-  depends_on = [
-    # Need to ensure the CoreDNS updates are peformed before provisioning
-    null_resource.modify_kube_dns
-  ]
-}
+#resource "helm_release" "coredns" {
+#  name             = "coredns"
+#  namespace        = "kube-system"
+#  create_namespace = false
+#  description      = "CoreDNS is a DNS server that chains plugins and provides Kubernetes DNS Services"
+#  chart            = "coredns"
+#  version          = "1.19.4"
+#  repository       = "https://coredns.github.io/helm"
+#
+#  # For EKS image repositories https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
+#  values = [
+#    <<-EOT
+#      image:
+#        repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/coredns
+#        tag: ${data.aws_eks_addon_version.this["coredns"].version}
+#      deployment:
+#        name: coredns
+#        annotations:
+#          eks.amazonaws.com/compute-type: fargate
+#      service:
+#        name: kube-dns
+#        annotations:
+#          eks.amazonaws.com/compute-type: fargate
+#      podAnnotations:
+#        eks.amazonaws.com/compute-type: fargate
+#      EOT
+#  ]
+#
+#  depends_on = [
+#    # Need to ensure the CoreDNS updates are peformed before provisioning
+#    null_resource.modify_kube_dns
+#  ]
+#}
 
 ################################################################################
 # Supporting Resources
