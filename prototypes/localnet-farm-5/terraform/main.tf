@@ -34,7 +34,7 @@ locals {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 18.0"
+  version = "~> 19.0"
 
   cluster_name                    = local.name
   cluster_version                 = local.cluster_version
@@ -311,7 +311,7 @@ resource "helm_release" "coredns" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 5.1"
 
   name = local.name
   cidr = "10.0.0.0/16"
@@ -404,23 +404,23 @@ provider "kubernetes" {
   }
 }
 
-resource "kubernetes_service_account" "service-account" {
-  metadata {
-    name = "aws-load-balancer-controller"
-    namespace = "kube-system"
-    labels = {
-        "app.kubernetes.io/name"= "aws-load-balancer-controller"
-        "app.kubernetes.io/component"= "controller"
-    }
-    annotations = {
-      "eks.amazonaws.com/role-arn" = module.lb_role.iam_role_arn
-      "eks.amazonaws.com/sts-regional-endpoints" = "true"
-    }
-  }
-  secret {
-    name = "${kubernetes_secret.localnet_farm.metadata.0.name}"
-  }
-}
+#resource "kubernetes_service_account" "service-account" {
+#  metadata {
+#    name = "aws-load-balancer-controller"
+#    namespace = "kube-system"
+#    labels = {
+#        "app.kubernetes.io/name"= "aws-load-balancer-controller"
+#        "app.kubernetes.io/component"= "controller"
+#    }
+#    annotations = {
+#      "eks.amazonaws.com/role-arn" = module.lb_role.iam_role_arn
+#      "eks.amazonaws.com/sts-regional-endpoints" = "true"
+#    }
+#  }
+#  secret {
+#    name = "${kubernetes_secret.localnet_farm.metadata.0.name}"
+#  }
+#}
 
 resource "kubernetes_secret" "localnet_farm" {
   metadata {
@@ -428,45 +428,45 @@ resource "kubernetes_secret" "localnet_farm" {
   }
 }
 
-resource "helm_release" "lb" {
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  namespace  = "kube-system"
-  depends_on = [
-    kubernetes_service_account.service-account
-  ]
-
-  set {
-    name  = "region"
-    value = local.region
-  }
-
-  set {
-    name  = "vpcId"
-    value = module.vpc.vpc_id
-  }
-
-  set {
-    name  = "image.repository"
-    value = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller"
-  }
-
-  set {
-    name  = "serviceAccount.create"
-    value = "false"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
-
-  set {
-    name  = "clusterName"
-    value = local.name
-  }
-}
+#resource "helm_release" "lb" {
+#  name       = "aws-load-balancer-controller"
+#  repository = "https://aws.github.io/eks-charts"
+#  chart      = "aws-load-balancer-controller"
+#  namespace  = "kube-system"
+#  depends_on = [
+#    kubernetes_service_account.service-account
+#  ]
+#
+#  set {
+#    name  = "region"
+#    value = local.region
+#  }
+#
+#  set {
+#    name  = "vpcId"
+#    value = module.vpc.vpc_id
+#  }
+#
+#  set {
+#    name  = "image.repository"
+#    value = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller"
+#  }
+#
+#  set {
+#    name  = "serviceAccount.create"
+#    value = "false"
+#  }
+#
+#  set {
+#    name  = "serviceAccount.name"
+#    value = "aws-load-balancer-controller"
+#  }
+#
+#  set {
+#    name  = "clusterName"
+#    value = local.name
+#  }
+#}
 
 # IRSA role for EBS
 # https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
