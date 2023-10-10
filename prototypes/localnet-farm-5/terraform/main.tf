@@ -2,19 +2,19 @@ provider "aws" {
   region = local.region
 }
 
-provider "helm" {
-  kubernetes {
-    host                   = module.eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", module.eks.cluster_id]
-    }
-  }
-}
+#provider "helm" {
+#  kubernetes {
+#    host                   = module.eks.cluster_endpoint
+#    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+#
+#    exec {
+#      api_version = "client.authentication.k8s.io/v1beta1"
+#      command     = "aws"
+#      # This requires the awscli to be installed locally where Terraform is executed
+#      args = ["eks", "get-token", "--cluster-name", module.eks.cluster_id]
+#    }
+#  }
+#}
 
 locals {
   name            = "localnet-farm-5"
@@ -184,37 +184,37 @@ module "eks" {
 # Modify EKS CoreDNS Deployment
 ################################################################################
 
-data "aws_eks_cluster_auth" "this" {
-  name = module.eks.cluster_id
-}
-
-locals {
-  kubeconfig = yamlencode({
-    apiVersion      = "v1"
-    kind            = "Config"
-    current-context = "terraform"
-    clusters = [{
-      name = module.eks.cluster_id
-      cluster = {
-        certificate-authority-data = module.eks.cluster_certificate_authority_data
-        server                     = module.eks.cluster_endpoint
-      }
-    }]
-    contexts = [{
-      name = "terraform"
-      context = {
-        cluster = module.eks.cluster_id
-        user    = "terraform"
-      }
-    }]
-    users = [{
-      name = "terraform"
-      user = {
-        token = data.aws_eks_cluster_auth.this.token
-      }
-    }]
-  })
-}
+#data "aws_eks_cluster_auth" "this" {
+#  name = module.eks.cluster_id
+#}
+#
+#locals {
+#  kubeconfig = yamlencode({
+#    apiVersion      = "v1"
+#    kind            = "Config"
+#    current-context = "terraform"
+#    clusters = [{
+#      name = module.eks.cluster_id
+#      cluster = {
+#        certificate-authority-data = module.eks.cluster_certificate_authority_data
+#        server                     = module.eks.cluster_endpoint
+#      }
+#    }]
+#    contexts = [{
+#      name = "terraform"
+#      context = {
+#        cluster = module.eks.cluster_id
+#        user    = "terraform"
+#      }
+#    }]
+#    users = [{
+#      name = "terraform"
+#      user = {
+#        token = data.aws_eks_cluster_auth.this.token
+#      }
+#    }]
+#  })
+#}
 
 # Separate resource so that this is only ever executed once
 resource "null_resource" "remove_default_coredns_deployment" {
