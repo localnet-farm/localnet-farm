@@ -84,7 +84,10 @@ module "eks" {
 		#instance_types = ["c6a.2xlarge"] # 8vCPUs, 18GiB, AMD, $223.38/mth
 
     # https://instances.vantage.sh/aws/ec2/m6a.large?region=us-west-2&cost_duration=monthly&os=linux&reserved_term=Standard.noUpfront
-    instance_types = ["m6a.large"] # 2vCPUs, 8GiB, AMD, $63.07/mth
+    #instance_types = ["m6a.large"] # 2vCPUs, 8GiB, AMD, $63.07/mth
+    #instance_types = ["t2.small"] # 1vCPUs, 2GiB, $16.79/mth
+    #instance_types = ["t3.small"] # 1vCPUs, 2GiB, $15.18/mth
+    instance_types = ["t3a.small"] # 2vCPUs, 2GiB, $13.72/mth
 
 
 
@@ -118,6 +121,8 @@ module "eks" {
 	eks_managed_node_groups = {
 		admin = {
 			name = "node-group-admin"
+
+      subnet_ids = [module.vpc.public_subnets[1]]
 
 			#instance_types = ["c6a.2xlarge"]
 
