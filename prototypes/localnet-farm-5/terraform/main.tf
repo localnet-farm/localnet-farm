@@ -323,6 +323,7 @@ module "vpc" {
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true
+  map_public_ip_on_launch = true
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_iam_role  = true
