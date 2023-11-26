@@ -5770,7 +5770,7 @@ data:
     #
     # If this is "true", users are able to associate arbitrary names with their
     # services via the DomainMapping feature.
-    autocreate-cluster-domain-claims: "false"
+    autocreate-cluster-domain-claims: "true"
 
     # If true, networking plugins can add additional information to deployed
     # applications to make their pods directly accessible via their IPs even if mesh is
