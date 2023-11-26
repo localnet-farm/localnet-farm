@@ -87,8 +87,11 @@ module "eks" {
     #instance_types = ["m6a.large"] # 2vCPUs, 8GiB, AMD, $63.07/mth
     #instance_types = ["t2.small"] # 1vCPUs, 2GiB, $16.79/mth
     #instance_types = ["t3.small"] # 1vCPUs, 2GiB, $15.18/mth
-    instance_types = ["t3a.small"] # 2vCPUs, 2GiB, $13.72/mth
+    #instance_types = ["t3a.small"] # 2vCPUs, 2GiB, $13.72/mth
 
+    # https://instances.vantage.sh/aws/ec2/t3a.xlarge?selected=m6a.large&region=us-east-1&os=linux&cost_duration=monthly&reserved_term=Standard.noUpfront
+    instance_types = ["t3a.xlarge"] # 4vCPUs, 16GiB, $109.79/mth
+  
 
 
     # Force gp3 & encryption (https://github.com/bottlerocket-os/bottlerocket#default-volumes)
