@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- github.com/knative/serving/releases/download/knative-v1.10.1/serving-core.yaml
+- github.com/knative/serving/releases/download/knative-v1.12.1/serving-core.yaml
 - github.com/knative/net-contour/releases/download/knative-v1.12.1/contour.yaml
 - github.com/knative/net-contour/releases/download/knative-v1.12.1/net-contour.yaml
 patches:
@@ -77,56 +77,6 @@ patches:
             podAntiAffinity: null
           containers:
           - name: controller
-            resources:
-              limits:
-                cpu: 100m
-                memory: 100Mi
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      namespace: knative-serving
-      name: domain-mapping
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                    - amd64
-            podAntiAffinity: null
-          containers:
-          - name: domain-mapping
-            resources:
-              limits:
-                cpu: 30m
-                memory: 40Mi
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      namespace: knative-serving
-      name: domainmapping-webhook
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                    - amd64
-            podAntiAffinity: null
-          containers:
-          - name: domainmapping-webhook
             resources:
               limits:
                 cpu: 100m
