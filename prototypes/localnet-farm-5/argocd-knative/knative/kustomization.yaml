@@ -50,6 +50,137 @@ patches:
                     operator: In
                     values:
                     - amd64
+          containers:
+          - name: activator
+            resources:
+              limits:
+                cpu: 300m
+                memory: 60Mi
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: controller
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - amd64
+            podAntiAffinity: null
+          containers:
+          - name: controller
+            resources:
+              limits:
+                cpu: 100m
+                memory: 100Mi
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: domain-mapping
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - amd64
+            podAntiAffinity: null
+          containers:
+          - name: domain-mapping
+            resources:
+              limits:
+                cpu: 30m
+                memory: 40Mi
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: domainmapping-webhook
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - amd64
+            podAntiAffinity: null
+          containers:
+          - name: domainmapping-webhook
+            resources:
+              limits:
+                cpu: 100m
+                memory: 100Mi
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: webhook
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - amd64
+            podAntiAffinity: null
+          containers:
+          - name: webhook
+            resources:
+              limits:
+                cpu: 100m
+                memory: 100Mi
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: autoscaler
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - amd64
+            podAntiAffinity: null
+          containers:
+          - name: autoscaler
+            resources:
+              limits:
+                cpu: 100m
+                memory: 100Mi
 - patch: |-
     apiVersion: v1
     kind: Service
