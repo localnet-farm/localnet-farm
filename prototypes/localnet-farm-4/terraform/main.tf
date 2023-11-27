@@ -135,8 +135,6 @@ module "eks" {
       iam_role_additional_policies = [
         "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
       ]
-
-      vpc_security_group_ids = [aws_security_group.eks.id]
 		}
 	}
 
