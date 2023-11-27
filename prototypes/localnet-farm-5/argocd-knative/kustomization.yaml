@@ -1,8 +1,4 @@
-resources:
-- knative/serving-core-customized.yaml
-#- knative/kourier-customized.yaml
-#- knative/github.com/knative/net-contour/releases/download/knative-v1.12.1/contour.yaml
-- knative/contour-customized.yaml
-- knative/github.com/knative/net-contour/releases/download/knative-v1.12.1/net-contour.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+resources:
+- knative/
