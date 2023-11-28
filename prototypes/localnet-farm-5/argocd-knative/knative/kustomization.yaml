@@ -139,7 +139,7 @@ patches:
       name: envoy
     spec:
       externalIPs:
-        - 35.91.73.113
+        - 54.188.67.181
       ports:
         - name: http
           nodePort: 30080
