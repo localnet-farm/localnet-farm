@@ -9,9 +9,9 @@ kn service create hello \
 
 # https://knative.dev/docs/serving/services/custom-domains/
 
-# kn domain create hello.v6z.me --ref hello
+kn domain create hello.v6z.me --ref hello
 
 # Update DNS
 
-# curl http://hello.v6z.me:30080/
+curl http://hello.v6z.me:30080/
 

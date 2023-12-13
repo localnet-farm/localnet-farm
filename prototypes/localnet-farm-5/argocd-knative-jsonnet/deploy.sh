@@ -4,7 +4,7 @@
 
 echo GITHUB_PAT $GITHUB_PAT
 
-EXTERNAL_IP=$(./get-ip.sh)
+EXTERNAL_IP=$(../get-ip.sh)
 
 argocd repo add https://github.com/jimpick/localnet-farm.git --username jimpick --password $GITHUB_PAT --upsert
 
