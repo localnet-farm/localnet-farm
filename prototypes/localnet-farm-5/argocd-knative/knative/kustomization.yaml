@@ -132,23 +132,9 @@ patches:
                 cpu: 100m
                 memory: 100Mi
 - patch: |-
+    $patch: delete
     apiVersion: v1
     kind: Service
     metadata:
       namespace: contour-external
       name: envoy
-    spec:
-      externalIPs:
-        - 34.209.153.37
-      ports:
-        - name: http
-          nodePort: 30080
-          port: 80
-          protocol: TCP
-          targetPort: 8080
-        - name: https
-          nodePort: 30443
-          port: 443
-          protocol: TCP
-          targetPort: 8443
-      type: NodePort
