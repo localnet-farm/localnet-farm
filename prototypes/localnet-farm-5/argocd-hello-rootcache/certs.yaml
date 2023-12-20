@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hello-rootcache
+spec:
+  commonName: hello.rootcache.com
+  secretName: hello-rootcache-cert
+  dnsNames:
+    - hello.rootcache.com
+  issuerRef:
+    name: letsencrypt-prod-dns
+    kind: ClusterIssuer
