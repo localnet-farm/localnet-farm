@@ -10,3 +10,16 @@ spec:
   issuerRef:
     name: letsencrypt-prod-dns
     kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hello-v6z
+spec:
+  commonName: hello.v6z.me
+  secretName: hello-v6z-cert
+  dnsNames:
+    - hello.v6z.me
+  issuerRef:
+    name: letsencrypt-prod-dns
+    kind: ClusterIssuer
