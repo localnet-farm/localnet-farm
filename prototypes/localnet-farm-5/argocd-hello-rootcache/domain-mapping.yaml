@@ -9,5 +9,5 @@ spec:
     kind: Service
     name: hello-rootcache
     namespace: default
-	tls:
+  tls:
     secretName: hello-rootcache-cert
