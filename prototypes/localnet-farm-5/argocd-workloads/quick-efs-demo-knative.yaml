@@ -7,14 +7,12 @@ spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "1m"
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "15m"
     spec:
       containerConcurrency: 0
       timeoutSeconds: 120
       containers:
-        - image: centos
-          command: ["/bin/sh"]
-          args: ["-c", "while true; do sleep 50; done"]
+        - image: ghcr.io/knative/helloworld-go:latest
           volumeMounts:
           - name: persistent-storage
             mountPath: /data
