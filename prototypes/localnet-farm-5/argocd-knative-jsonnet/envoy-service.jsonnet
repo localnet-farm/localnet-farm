@@ -12,9 +12,6 @@
     }
   },
   "spec": {
-    "externalIPs": [
-      "34.209.153.37"
-    ],
     "externalTrafficPolicy": "Local",
     "ports": [
       {

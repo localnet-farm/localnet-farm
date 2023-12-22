@@ -34,6 +34,8 @@ argocd cluster add localnet-farm-5 -y
 
 ```
 (cd argocd-knative; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-knative
 ```
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-knative
@@ -42,6 +44,8 @@ argocd cluster add localnet-farm-5 -y
 
 ```
 (cd argocd-knative-jsonnet; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-knative-jsonnet
 ```
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-knative-jsonnet
@@ -50,12 +54,16 @@ argocd cluster add localnet-farm-5 -y
 
 ```
 (cd test-knative; ./test.sh)
+
+curl http://hello.v6z.me:30080/
 ```
 
 ### 8. Add AWS Secrets for Route 53
 
 ```
 (cd argocd-aws-secrets; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-route53
 ```
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-route53
@@ -64,9 +72,28 @@ argocd cluster add localnet-farm-5 -y
 
 ```
 (cd argocd-cert-manager; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
 ```
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
+
+### 10. Test SSL apps
+
+```
+(cd argocd-hello-rootcache; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-hello-rootcache
+
+curl https://hello.rootcache.com:30443/
+
+curl https://hello.v6z.me:30443/
+```
+
+* https://argocd.infra.hex.camp/applications/localnet-farm-5-hello-rootcache
+* https://hello.rootcache.com:30443/
+* https://hello.v6z.me:30443/
+
 
 
 
