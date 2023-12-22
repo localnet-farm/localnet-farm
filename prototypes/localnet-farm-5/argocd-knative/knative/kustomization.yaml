@@ -137,8 +137,8 @@ patches:
     metadata:
       namespace: contour-external
       name: envoy
-    labels:
-      networking.knative.dev/ingress-provider: contour
+      labels:
+        networking.knative.dev/ingress-provider: contour
     spec:
       externalTrafficPolicy: Local
       ports:
