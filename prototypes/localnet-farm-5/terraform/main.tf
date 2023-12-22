@@ -546,3 +546,6 @@ module "efs" {
   }
 }
 
+output "localnet-farm-efs" {
+  value = module.efs.id
+}
