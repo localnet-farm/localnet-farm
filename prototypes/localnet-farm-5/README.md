@@ -40,17 +40,7 @@ open https://argocd.infra.hex.camp/applications/localnet-farm-5-knative
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-knative
 
-### 6. Set IP for Ingress (Countour)
-
-```
-(cd argocd-knative-jsonnet; ./deploy.sh)
-
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-knative-jsonnet
-```
-
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-knative-jsonnet
-
-### 7. Test Knative
+### 6. Test Knative
 
 ```
 (cd test-knative; ./test.sh)
@@ -58,7 +48,7 @@ open https://argocd.infra.hex.camp/applications/localnet-farm-5-knative-jsonnet
 curl http://hello.v6z.me:30080/
 ```
 
-### 8. Add AWS Secrets for Route 53
+### 7. Add AWS Secrets for Route 53
 
 ```
 (cd argocd-aws-secrets; ./deploy.sh)
@@ -68,7 +58,7 @@ open https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-rout
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-route53
 
-### 9. Add cert-manager
+### 8. Add cert-manager
 
 ```
 (cd argocd-cert-manager; ./deploy.sh)
@@ -78,7 +68,7 @@ open https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
 
 * https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
 
-### 10. Test SSL apps
+### 9. Test SSL apps
 
 ```
 (cd argocd-hello-rootcache; ./deploy.sh)
