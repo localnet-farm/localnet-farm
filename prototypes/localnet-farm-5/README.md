@@ -93,5 +93,15 @@ curl https://hello.v6z.me:30443/
 open https://argocd.infra.hex.camp/applications/localnet-farm-5-efs-jsonnet
 ```
 
+* https://argocd.infra.hex.camp/applications/localnet-farm-5-efs-jsonnet
 
+### 11. Demo workloads
 
+```
+(cd argocd-workloads; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-workloads
+```
+
+* https://argocd.infra.hex.camp/applications/localnet-farm-5-workloads
+```
