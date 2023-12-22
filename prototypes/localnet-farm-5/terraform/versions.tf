@@ -1,10 +1,17 @@
 terraform {
-  required_version = ">= 0.13.1"
+  backend "remote" {
+    organization = "hex-camp"
+    workspaces {
+      name = local.name
+    }
+  }
+
+  required_version = ">= 1.6.0"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.20"
+      version = ">= 5.31"
     }
     helm = {
       source  = "hashicorp/helm"

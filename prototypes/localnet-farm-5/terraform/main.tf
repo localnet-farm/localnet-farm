@@ -1,3 +1,17 @@
+locals {
+  name            = "localnet-farm-5"
+  cluster_version = "1.28"
+  region          = "us-west-2"
+
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
+
+  tags = {
+    lf-cluster = local.name
+    GithubRepo = "localnet-farm"
+    GithubOrg  = "jimpick"
+  }
+}
+
 provider "aws" {
   region = local.region
 }
@@ -15,20 +29,6 @@ provider "aws" {
 #    }
 #  }
 #}
-
-locals {
-  name            = "localnet-farm-5"
-  cluster_version = "1.28"
-  region          = "us-west-2"
-
-  azs = slice(data.aws_availability_zones.available.names, 0, 3)
-
-  tags = {
-    lf-cluster = local.name
-    GithubRepo = "localnet-farm"
-    GithubOrg  = "jimpick"
-  }
-}
 
 data "aws_availability_zones" "available" {}
 
