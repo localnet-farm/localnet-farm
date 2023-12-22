@@ -1,0 +1,39 @@
+# https://docs.aws.amazon.com/eks/latest/userguide/ebs-sample-app.html
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quick-ebs-demo-claim
+  namespace: quick  
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebs-sc
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quick-ebs-demo
+  namespace: quick
+spec:
+  containers:
+  - name: app
+    image: centos
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /data
+    resources:
+      requests:
+        memory: "20Mi"
+        cpu: "100m"
+      limits:
+        memory: "20Mi"
+        cpu: "100m"
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: quick-ebs-demo-claim

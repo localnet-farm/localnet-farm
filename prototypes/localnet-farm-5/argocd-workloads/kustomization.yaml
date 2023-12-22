@@ -1,0 +1,6 @@
+resources:
+- namespace-quick.yaml
+- ebs-sc.yaml
+- quick-ebs-demo.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
