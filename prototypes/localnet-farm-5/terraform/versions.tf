@@ -2,7 +2,7 @@ terraform {
   backend "remote" {
     organization = "hex-camp"
     workspaces {
-      name = local.name
+      name = "localnet-farm-5"
     }
   }
 
