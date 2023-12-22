@@ -1,0 +1,24 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: quick-efs-demo
+  namespace: quick
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/scale-to-zero-pod-retention-period: "1m"
+    spec:
+      containerConcurrency: 0
+      timeoutSeconds: 120
+      containers:
+        - image: centos
+          command: ["/bin/sh"]
+          args: ["-c", "while true; do sleep 50; done"]
+          volumeMounts:
+          - name: persistent-storage
+            mountPath: /data
+      volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: quick-efs-claim
