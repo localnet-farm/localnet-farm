@@ -522,6 +522,8 @@ module "efs" {
 
   encrypted      = false
 
+  attach_policy = false
+
 	# Mount targets / security group
   mount_targets              = { for k, v in zipmap(local.azs, module.vpc.private_subnets) : k => { subnet_id = v } }
   security_group_description = "${local.name} EFS security group"
