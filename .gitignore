@@ -3,3 +3,4 @@
 .terraform*
 localhost*
 tmp
+.DS_Store

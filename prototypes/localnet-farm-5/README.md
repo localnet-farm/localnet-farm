@@ -84,6 +84,14 @@ curl https://hello.v6z.me:30443/
 * https://hello.rootcache.com:30443/
 * https://hello.v6z.me:30443/
 
+### 10. Setup EFS PV
+
+```
+(cd argocd-efs-jsonnet; ./deploy.sh)
+
+
+open https://argocd.infra.hex.camp/applications/localnet-farm-5-efs-jsonnet
+```
 
 
 
