@@ -21,12 +21,16 @@ locals {
   cluster_version = "1.28"
   region          = "us-west-2"
 
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
+
   tags = {
     lf-cluster = local.name
     GithubRepo = "localnet-farm"
     GithubOrg  = "jimpick"
   }
 }
+
+data "aws_availability_zones" "available" {}
 
 ################################################################################
 # EKS Module
@@ -508,3 +512,24 @@ resource "kubernetes_secret" "localnet_farm" {
 #
 #  tags = local.tags
 #}
+
+# https://github.com/terraform-aws-modules/terraform-aws-efs/blob/master/examples/complete/main.tf
+module "efs" {
+  source  = "terraform-aws-modules/efs/aws"
+  version = "1.3.1"
+
+  name = "${local.name}-efs"
+
+	# Mount targets / security group
+  mount_targets              = { for k, v in zipmap(local.azs, module.vpc.private_subnets) : k => { subnet_id = v } }
+  security_group_description = "${local.name} EFS security group"
+  security_group_vpc_id      = module.vpc.vpc_id
+  security_group_rules = {
+    vpc = {
+      # relying on the defaults provdied for EFS/NFS (2049/TCP + ingress)
+      description = "NFS ingress from VPC private subnets"
+      cidr_blocks = module.vpc.private_subnets_cidr_blocks
+    }
+  }
+}
+
