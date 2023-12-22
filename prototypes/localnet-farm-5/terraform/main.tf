@@ -52,6 +52,9 @@ module "eks" {
     aws-ebs-csi-driver = {
       most_recent = true
     }
+    aws-efs-csi-driver = {
+      most_recent = true
+    }
   }
 
   #cluster_encryption_config = [{
@@ -140,8 +143,10 @@ module "eks" {
       # https://www.reddit.com/r/Terraform/comments/znomk4/ebs_csi_driver_entirely_from_terraform_on_aws_eks/
       # https://github.com/ElliotG/coder-oss-tf/blob/main/aws-eks/main.tf
       # Needed by the aws-ebs-csi-driver
+      # EFS: https://docs.aws.amazon.com/eks/latest/userguide/efs-csi.html
       iam_role_additional_policies = {
         AmazonEBSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+        AmazonEFSCSIDriverPolicy = "arn:aws:iam::aws:policy/service-role/AmazonEFSCSIDriverPolicy"
       }
 
       vpc_security_group_ids = [aws_security_group.eks.id]
