@@ -58,7 +58,7 @@ argocd cluster add localnet-farm-5 -y
 (cd argocd-aws-secrets; ./deploy.sh)
 ```
 
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-provider-quest-route53
+* https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-route53
 
 ### 9. Add cert-manager
 

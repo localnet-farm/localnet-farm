@@ -1,0 +1,56 @@
+# https://github.com/kubernetes-sigs/aws-efs-csi-driver/blob/master/examples/kubernetes/static_provisioning/README.md
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: quick-efs-pv
+  namespace: quick
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: efs-sc
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-0c0128ebbb77bdce7
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quick-efs-claim
+  namespace: quick
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quick-efs-demo
+  namespace: quick
+spec:
+  containers:
+  - name: app
+    image: centos
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /data
+    resources:
+      requests:
+        memory: "20Mi"
+        cpu: "100m"
+      limits:
+        memory: "20Mi"
+        cpu: "100m"
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: quick-efs-claim
