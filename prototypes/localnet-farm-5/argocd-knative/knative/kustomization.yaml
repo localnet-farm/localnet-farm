@@ -132,9 +132,26 @@ patches:
                 cpu: 100m
                 memory: 100Mi
 - patch: |-
-    $patch: delete
     apiVersion: v1
     kind: Service
     metadata:
       namespace: contour-external
       name: envoy
+			labels:
+				networking.knative.dev/ingress-provider: contour
+		spec:
+			externalTrafficPolicy: Local
+			ports:
+				- port: 80
+					nodePort: 30080
+					name: http
+					protocol: TCP
+					targetPort: 8080
+				- port: 443
+					nodePort: 30443
+					name: https
+					protocol: TCP
+					targetPort: 8443
+			selector:
+				app: envoy
+			type: NodePort
