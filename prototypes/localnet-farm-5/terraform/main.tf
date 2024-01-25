@@ -97,7 +97,8 @@ module "eks" {
     #instance_types = ["t3a.small"] # 2vCPUs, 2GiB, $13.72/mth
 
     # https://instances.vantage.sh/aws/ec2/t3a.xlarge?selected=m6a.large&region=us-east-1&os=linux&cost_duration=monthly&reserved_term=Standard.noUpfront
-    instance_types = ["t3a.xlarge"] # 4vCPUs, 16GiB, $109.79/mth
+    # instance_types = ["t3a.xlarge"] # 4vCPUs, 16GiB, $109.79/mth
+    instance_types = ["t3a.large"] # 2vCPUs, 8GiB, $54.896/mth
   
 
 
