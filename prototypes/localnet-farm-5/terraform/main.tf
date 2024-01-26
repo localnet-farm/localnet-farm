@@ -152,7 +152,7 @@ module "eks" {
 		admin = {
 			name = "node-group-admin"
 
-      subnet_ids = [module.vpc.public_subnets[3]]
+      subnet_ids = [module.vpc.public_subnets[2]]
 
 			#instance_types = ["c6a.2xlarge"]
 
@@ -185,7 +185,7 @@ module "eks" {
       ]
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
-      subnet_ids = [module.vpc.private_subnets[3]]
+      subnet_ids = [module.vpc.private_subnets[2]]
 
       tags = {
 				lf-cluster = local.name
@@ -206,7 +206,7 @@ module "eks" {
       ]
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
-      subnet_ids = [module.vpc.private_subnets[3]]
+      subnet_ids = [module.vpc.private_subnets[2]]
 
       tags = {
         lf-cluster = local.name
@@ -355,9 +355,10 @@ module "vpc" {
   name = local.name
   cidr = "10.0.0.0/16"
 
-  azs             = ["${local.region}a", "${local.region}b", "${local.region}c", "${local.region}d"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24"]
-  public_subnets  = ["10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24", "10.0.8.0/24"]
+  #azs             = ["${local.region}a", "${local.region}b", "${local.region}d"]
+  azs = local.azs
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
