@@ -11,7 +11,7 @@
 ```
 export AWS_PROFILE=localnet_farm
 
-aws eks update-kubeconfig --region us-west-2 --name localnet-farm-5
+aws eks update-kubeconfig --region ca-central-1 --name localnet-farm-5
 ```
 
 ### 3. Update DNS
