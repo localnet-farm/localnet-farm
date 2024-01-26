@@ -98,10 +98,27 @@ module "eks" {
 
     # https://instances.vantage.sh/aws/ec2/t3a.xlarge?selected=m6a.large&region=us-east-1&os=linux&cost_duration=monthly&reserved_term=Standard.noUpfront
     # instance_types = ["t3a.xlarge"] # 4vCPUs, 16GiB, $109.79/mth
-    instance_types = ["t3a.large"] # 2vCPUs, 8GiB, $54.896/mth
+
+    instance_types = ["t3a.large"] # AMD, 2vCPUs, 8GiB, $54.896/mth, $21.973/mth spot
+    # us-west-2 spot prices 2024-01-01
+    # us-west-2a $0.0315
+    # us-west-2b $0.0309
+    # us-west-2c $0.0346
+    # us-west-2d $0.0253
+
+    # https://instances.vantage.sh/aws/ec2/t4g.large?region=us-east-1&os=linux&cost_duration=monthly&reserved_term=Standard.noUpfront
+    #instance_types = ["t4g.large"] # Graviton, 2vCPUs, 8GiB, $49.056/mth, $23.068/mth spot
+    # us-west-2 spot prices 2024-01-01
+    # us-west-2a $0.0245
+    # us-west-2b $0.0227
+    # us-west-2c $0.0276
+    # us-west-2d $0.0228
+
+    # ca-central-1a $0.0176
+    # ca-central-1b $0.0221
+    # ca-central-1d $0.0098
 
     capacity_type = "SPOT"
-
 
     # Force gp3 & encryption (https://github.com/bottlerocket-os/bottlerocket#default-volumes)
     block_device_mappings = {
