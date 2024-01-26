@@ -85,7 +85,8 @@ module "eks" {
 
     # https://github.com/terraform-aws-modules/terraform-aws-eks/issues/1845#issuecomment-1054248734
 
-    ami_type              = "BOTTLEROCKET_x86_64"
+    #ami_type              = "BOTTLEROCKET_x86_64"
+    ami_type              = "BOTTLEROCKET_ARM_64"
     platform              = "bottlerocket"
 
     # https://instances.vantage.sh/aws/ec2/c6a.2xlarge?region=us-west-2&cost_duration=monthly&os=linux&reserved_term=Standard.noUpfront
