@@ -4,7 +4,7 @@ locals {
   #region          = "us-west-2"
   region          = "ca-central-1"
 
-  azs = slice(data.aws_availability_zones.available.names, 0, 4)
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
     lf-cluster = local.name
