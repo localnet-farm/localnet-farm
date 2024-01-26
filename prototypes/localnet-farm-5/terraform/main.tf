@@ -1,6 +1,6 @@
 locals {
   name            = "localnet-farm-5"
-  cluster_version = "1.28"
+  cluster_version = "1.29"
   #region          = "us-west-2"
   region          = "ca-central-1"
 
