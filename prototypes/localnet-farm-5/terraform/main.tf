@@ -1,9 +1,10 @@
 locals {
   name            = "localnet-farm-5"
   cluster_version = "1.28"
-  region          = "us-west-2"
+  #region          = "us-west-2"
+  region          = "ca-central-1"
 
-  azs = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs = slice(data.aws_availability_zones.available.names, 0, 4)
 
   tags = {
     lf-cluster = local.name
@@ -99,7 +100,7 @@ module "eks" {
     # https://instances.vantage.sh/aws/ec2/t3a.xlarge?selected=m6a.large&region=us-east-1&os=linux&cost_duration=monthly&reserved_term=Standard.noUpfront
     # instance_types = ["t3a.xlarge"] # 4vCPUs, 16GiB, $109.79/mth
 
-    instance_types = ["t3a.large"] # AMD, 2vCPUs, 8GiB, $54.896/mth, $21.973/mth spot
+    #instance_types = ["t3a.large"] # AMD, 2vCPUs, 8GiB, $54.896/mth, $21.973/mth spot
     # us-west-2 spot prices 2024-01-01
     # us-west-2a $0.0315
     # us-west-2b $0.0309
@@ -107,7 +108,7 @@ module "eks" {
     # us-west-2d $0.0253
 
     # https://instances.vantage.sh/aws/ec2/t4g.large?region=us-east-1&os=linux&cost_duration=monthly&reserved_term=Standard.noUpfront
-    #instance_types = ["t4g.large"] # Graviton, 2vCPUs, 8GiB, $49.056/mth, $23.068/mth spot
+    instance_types = ["t4g.large"] # Graviton, 2vCPUs, 8GiB, $49.056/mth, $23.068/mth spot
     # us-west-2 spot prices 2024-01-01
     # us-west-2a $0.0245
     # us-west-2b $0.0227
@@ -151,7 +152,7 @@ module "eks" {
 		admin = {
 			name = "node-group-admin"
 
-      subnet_ids = [module.vpc.public_subnets[1]]
+      subnet_ids = [module.vpc.public_subnets[3]]
 
 			#instance_types = ["c6a.2xlarge"]
 
@@ -184,7 +185,7 @@ module "eks" {
       ]
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
-      subnet_ids = [module.vpc.private_subnets[1]]
+      subnet_ids = [module.vpc.private_subnets[3]]
 
       tags = {
 				lf-cluster = local.name
@@ -205,7 +206,7 @@ module "eks" {
       ]
 
       # Using specific subnets instead of the subnets supplied for the cluster itself
-      subnet_ids = [module.vpc.private_subnets[1]]
+      subnet_ids = [module.vpc.private_subnets[3]]
 
       tags = {
         lf-cluster = local.name
