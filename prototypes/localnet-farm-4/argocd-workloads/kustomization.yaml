@@ -10,6 +10,7 @@ resources:
 - glif/v1_23_0-release-d1d4b35-2-miners-snapshot.yaml
 - glif/v1_25_0_rc3-release-2ca16cc.yaml
 - glif/v1_25_0_rc3-release-2ca16cc-actions.yaml
+- glif/v1_25_2_master-6cbeb9a.yaml
 - hexcamp/hexcamp-webrtc-star.yaml
 - hexcamp/hexcamp-libp2p-webrtc-relay.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
