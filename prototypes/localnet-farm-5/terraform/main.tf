@@ -361,14 +361,14 @@ module "vpc" {
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
+  #enable_nat_gateway   = true
+  #single_nat_gateway   = true
   enable_dns_hostnames = true
   map_public_ip_on_launch = true
 
-  enable_flow_log                      = true
-  create_flow_log_cloudwatch_iam_role  = true
-  create_flow_log_cloudwatch_log_group = true
+  #enable_flow_log                      = true
+  #create_flow_log_cloudwatch_iam_role  = true
+  #create_flow_log_cloudwatch_log_group = true
 
   public_subnet_tags = {
     "kubernetes.io/cluster/${local.name}" = "shared"
@@ -381,6 +381,25 @@ module "vpc" {
   }
 
   tags = local.tags
+}
+
+# https://registry.terraform.io/modules/int128/nat-instance/aws/latest
+
+module "nat" {
+  source = "int128/nat-instance/aws"
+
+  name                        = "main"
+  vpc_id                      = module.vpc.vpc_id
+  public_subnet               = module.vpc.public_subnets[0]
+  private_subnets_cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  private_route_table_ids     = module.vpc.private_route_table_ids
+}
+
+resource "aws_eip" "nat" {
+  network_interface = module.nat.eni_id
+  tags = {
+    "Name" = "nat-instance-main"
+  }
 }
 
 resource "aws_kms_key" "eks" {
