@@ -62,6 +62,8 @@ module "eks" {
     }
   }
 
+  cluster_enabled_log_types = []
+
   #cluster_encryption_config = [{
   #  provider_key_arn = aws_kms_key.eks.arn
   #  resources        = ["secrets"]
