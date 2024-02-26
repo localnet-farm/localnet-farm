@@ -397,12 +397,12 @@ module "nat" {
   private_route_table_ids     = module.vpc.private_route_table_ids
 }
 
-resource "aws_eip" "nat" {
-  network_interface = module.nat.eni_id
-  tags = {
-    "Name" = "nat-instance-main"
-  }
-}
+#resource "aws_eip" "nat" {
+#  network_interface = module.nat.eni_id
+#  tags = {
+#    "Name" = "nat-instance-main"
+#  }
+#}
 
 resource "aws_kms_key" "eks" {
   description             = "EKS Secret Encryption Key"
