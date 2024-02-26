@@ -163,6 +163,8 @@ module "eks" {
 			max_size     = 1
 			desired_size = 1
 
+      enable_monitoring = false
+
       #use_custom_launch_template = false
 
       #disk_size = 80
