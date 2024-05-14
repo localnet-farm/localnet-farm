@@ -218,23 +218,23 @@ module "eks" {
 #}
 
 # Separate resource so that this is only ever executed once
-resource "null_resource" "remove_default_coredns_deployment" {
-  triggers = {}
-
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    environment = {
-      KUBECONFIG = base64encode(local.kubeconfig)
-    }
-
-    # We are removing the deployment provided by the EKS service and replacing it through the self-managed CoreDNS Helm addon
-    # However, we are maintaing the existing kube-dns service and annotating it for Helm to assume control
-    command = <<-EOT
-      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
-      ./kubectl --namespace kube-system delete deployment coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
-    EOT
-  }
-}
+#resource "null_resource" "remove_default_coredns_deployment" {
+#  triggers = {}
+#
+#  provisioner "local-exec" {
+#    interpreter = ["/bin/bash", "-c"]
+#    environment = {
+#      KUBECONFIG = base64encode(local.kubeconfig)
+#    }
+#
+#    # We are removing the deployment provided by the EKS service and replacing it through the self-managed CoreDNS Helm addon
+#    # However, we are maintaing the existing kube-dns service and annotating it for Helm to assume control
+#    command = <<-EOT
+#      curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl
+#      ./kubectl --namespace kube-system delete deployment coredns --kubeconfig <(echo $KUBECONFIG | base64 --decode)
+#    EOT
+#  }
+#}
 
 resource "null_resource" "modify_kube_dns" {
   triggers = {}
