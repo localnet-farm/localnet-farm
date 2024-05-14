@@ -185,37 +185,37 @@ module "eks" {
 # Modify EKS CoreDNS Deployment
 ################################################################################
 
-data "aws_eks_cluster_auth" "this" {
-  name = module.eks.cluster_id
-}
-
-locals {
-  kubeconfig = yamlencode({
-    apiVersion      = "v1"
-    kind            = "Config"
-    current-context = "terraform"
-    clusters = [{
-      name = module.eks.cluster_id
-      cluster = {
-        certificate-authority-data = module.eks.cluster_certificate_authority_data
-        server                     = module.eks.cluster_endpoint
-      }
-    }]
-    contexts = [{
-      name = "terraform"
-      context = {
-        cluster = module.eks.cluster_id
-        user    = "terraform"
-      }
-    }]
-    users = [{
-      name = "terraform"
-      user = {
-        token = data.aws_eks_cluster_auth.this.token
-      }
-    }]
-  })
-}
+#data "aws_eks_cluster_auth" "this" {
+#  name = module.eks.cluster_id
+#}
+#
+#locals {
+#  kubeconfig = yamlencode({
+#    apiVersion      = "v1"
+#    kind            = "Config"
+#    current-context = "terraform"
+#    clusters = [{
+#      name = module.eks.cluster_id
+#      cluster = {
+#        certificate-authority-data = module.eks.cluster_certificate_authority_data
+#        server                     = module.eks.cluster_endpoint
+#      }
+#    }]
+#    contexts = [{
+#      name = "terraform"
+#      context = {
+#        cluster = module.eks.cluster_id
+#        user    = "terraform"
+#      }
+#    }]
+#    users = [{
+#      name = "terraform"
+#      user = {
+#        token = data.aws_eks_cluster_auth.this.token
+#      }
+#    }]
+#  })
+#}
 
 # Separate resource so that this is only ever executed once
 resource "null_resource" "remove_default_coredns_deployment" {
@@ -272,39 +272,39 @@ data "aws_eks_addon_version" "this" {
   most_recent        = true
 }
 
-resource "helm_release" "coredns" {
-  name             = "coredns"
-  namespace        = "kube-system"
-  create_namespace = false
-  description      = "CoreDNS is a DNS server that chains plugins and provides Kubernetes DNS Services"
-  chart            = "coredns"
-  version          = "1.19.4"
-  repository       = "https://coredns.github.io/helm"
-
-  # For EKS image repositories https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
-  values = [
-    <<-EOT
-      image:
-        repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/coredns
-        tag: ${data.aws_eks_addon_version.this["coredns"].version}
-      deployment:
-        name: coredns
-        annotations:
-          eks.amazonaws.com/compute-type: fargate
-      service:
-        name: kube-dns
-        annotations:
-          eks.amazonaws.com/compute-type: fargate
-      podAnnotations:
-        eks.amazonaws.com/compute-type: fargate
-      EOT
-  ]
-
-  depends_on = [
-    # Need to ensure the CoreDNS updates are peformed before provisioning
-    null_resource.modify_kube_dns
-  ]
-}
+#resource "helm_release" "coredns" {
+#  name             = "coredns"
+#  namespace        = "kube-system"
+#  create_namespace = false
+#  description      = "CoreDNS is a DNS server that chains plugins and provides Kubernetes DNS Services"
+#  chart            = "coredns"
+#  version          = "1.19.4"
+#  repository       = "https://coredns.github.io/helm"
+#
+#  # For EKS image repositories https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
+#  values = [
+#    <<-EOT
+#      image:
+#        repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/eks/coredns
+#        tag: ${data.aws_eks_addon_version.this["coredns"].version}
+#      deployment:
+#        name: coredns
+#        annotations:
+#          eks.amazonaws.com/compute-type: fargate
+#      service:
+#        name: kube-dns
+#        annotations:
+#          eks.amazonaws.com/compute-type: fargate
+#      podAnnotations:
+#        eks.amazonaws.com/compute-type: fargate
+#      EOT
+#  ]
+#
+#  depends_on = [
+#    # Need to ensure the CoreDNS updates are peformed before provisioning
+#    null_resource.modify_kube_dns
+#  ]
+#}
 
 ################################################################################
 # Supporting Resources
