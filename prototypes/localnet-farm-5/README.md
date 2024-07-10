@@ -75,6 +75,8 @@ open https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
 
 open https://argocd.infra.hex.camp/applications/localnet-farm-5-hello-rootcache
 
+kn domain list
+
 curl https://hello.rootcache.com:30443/
 
 curl https://hello.v6z.me:30443/

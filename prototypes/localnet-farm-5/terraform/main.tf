@@ -573,7 +573,7 @@ resource "kubernetes_secret" "localnet_farm" {
 # https://github.com/terraform-aws-modules/terraform-aws-efs/blob/master/examples/complete/main.tf
 module "efs" {
   source  = "terraform-aws-modules/efs/aws"
-  version = "1.3.1"
+  version = "1.6.3"
 
   name = "${local.name}-efs"
 
