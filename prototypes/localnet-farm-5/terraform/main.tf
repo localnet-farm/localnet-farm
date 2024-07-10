@@ -364,11 +364,11 @@ module "vpc" {
 
   #azs             = ["${local.region}a", "${local.region}b", "${local.region}d"]
   azs = local.azs
-  #private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  #public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
-  private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
-  public_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 4)]
+  #private_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k)]
+  #public_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 4)]
 
   public_subnet_ipv6_prefixes   = [0, 1, 2]
   private_subnet_ipv6_prefixes  = [3, 4, 5]
