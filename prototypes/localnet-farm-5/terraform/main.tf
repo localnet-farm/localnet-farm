@@ -1,6 +1,6 @@
 locals {
   name            = "localnet-farm-5"
-  cluster_version = "1.29"
+  cluster_version = "1.30"
   #region          = "us-west-2"
   region          = "ca-central-1"
 
@@ -122,7 +122,8 @@ module "eks" {
     # ca-central-1b $0.0221
     # ca-central-1d $0.0098
 
-    capacity_type = "SPOT"
+    #capacity_type = "SPOT"
+    capacity_type = "ON_DEMAND"
 
     # Force gp3 & encryption (https://github.com/bottlerocket-os/bottlerocket#default-volumes)
     block_device_mappings = {
