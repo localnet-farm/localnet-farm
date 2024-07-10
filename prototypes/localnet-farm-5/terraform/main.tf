@@ -385,6 +385,8 @@ module "vpc" {
     "kubernetes.io/role/internal-elb"     = 1
   }
 
+  enable_ipv6 = true
+
   tags = local.tags
 }
 
