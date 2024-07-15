@@ -138,6 +138,7 @@ module "eks" {
       vpc_security_group_ids = [aws_security_group.eks.id]
 
       key_name = "jim-ca-central-1"
+      source_security_group_ids = [aws_security_group.eks.id]
 		}
 	}
 
