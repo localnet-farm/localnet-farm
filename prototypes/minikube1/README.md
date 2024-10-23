@@ -58,14 +58,12 @@ open https://argocd.infra.hex.camp/applications/minikube1-cert-manager
 
 * https://argocd.infra.hex.camp/applications/minikube1-cert-manager
 
----
-
-### 9. Test SSL apps
+### 8. Test SSL apps
 
 ```
 (cd argocd-hello-rootcache; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-hello-rootcache
+open https://argocd.infra.hex.camp/applications/minikube1-hello-rootcache
 
 kn domain list
 
@@ -74,9 +72,11 @@ curl https://hello.rootcache.com:30443/
 curl https://hello.v6z.me:30443/
 ```
 
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-hello-rootcache
+* https://argocd.infra.hex.camp/applications/minikube1-hello-rootcache
 * https://hello.rootcache.com:30443/
 * https://hello.v6z.me:30443/
+
+---
 
 ### 10. Setup EFS PV
 
