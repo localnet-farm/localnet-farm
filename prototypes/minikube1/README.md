@@ -30,8 +30,6 @@ open https://argocd.infra.hex.camp/applications/mininet1-knative
 
 * https://argocd.infra.hex.camp/applications/mininet1-knative
 
----
-
 ### 6. Test Knative
 
 ```
@@ -39,6 +37,8 @@ open https://argocd.infra.hex.camp/applications/mininet1-knative
 
 curl http://hello.v6z.me:30080/
 ```
+
+---
 
 ### 7. Add AWS Secrets for Route 53
 

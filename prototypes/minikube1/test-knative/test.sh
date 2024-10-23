@@ -11,6 +11,8 @@ kn service create hello \
 
 kn domain create hello.v6z.me --ref hello
 
+curl http://hello.default.minikube1.localnet.farm:30080
+
 # Update DNS
 
 curl http://hello.v6z.me:30080/
