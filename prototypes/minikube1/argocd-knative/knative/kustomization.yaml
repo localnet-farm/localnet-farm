@@ -12,7 +12,7 @@ patches:
       namespace: knative-serving
       name: config-domain
     data:
-      cluster-5.localnet.farm: ""
+      minikube1.localnet.farm: ""
 - patch: |-
     apiVersion: v1
     kind: ConfigMap
