@@ -30,7 +30,7 @@ open https://argocd.infra.hex.camp/applications/mininet1-knative
 
 * https://argocd.infra.hex.camp/applications/mininet1-knative
 
-### 6. Test Knative
+### 5. Test Knative
 
 ```
 (cd test-knative; ./test.sh)
@@ -38,27 +38,27 @@ open https://argocd.infra.hex.camp/applications/mininet1-knative
 curl http://hello.v6z.me:30080/
 ```
 
----
-
-### 7. Add AWS Secrets for Route 53
+### 6. Add AWS Secrets for Route 53
 
 ```
 (cd argocd-aws-secrets; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-route53
+open https://argocd.infra.hex.camp/applications/minikube1-aws-secrets-route53
 ```
 
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-aws-secrets-route53
+* https://argocd.infra.hex.camp/applications/minikube1-aws-secrets-route53
 
-### 8. Add cert-manager
+### 7. Add cert-manager
 
 ```
 (cd argocd-cert-manager; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
+open https://argocd.infra.hex.camp/applications/minikube1-cert-manager
 ```
 
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-cert-manager
+* https://argocd.infra.hex.camp/applications/minikube1-cert-manager
+
+---
 
 ### 9. Test SSL apps
 
