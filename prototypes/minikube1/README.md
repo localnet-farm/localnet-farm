@@ -20,17 +20,17 @@ argocd cluster rm minikube1
 argocd cluster add minikube1 -y
 ```
 
----
-
-### 5. Set up Knative
+### 4. Set up Knative
 
 ```
 (cd argocd-knative; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-knative
+open https://argocd.infra.hex.camp/applications/mininet1-knative
 ```
 
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-knative
+* https://argocd.infra.hex.camp/applications/mininet1-knative
+
+---
 
 ### 6. Test Knative
 
