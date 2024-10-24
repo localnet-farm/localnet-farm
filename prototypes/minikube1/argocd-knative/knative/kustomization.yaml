@@ -53,9 +53,7 @@ patches:
           containers:
           - name: activator
             resources:
-              limits:
-                cpu: 300m
-                memory: 60Mi
+              $patch: delete
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
@@ -78,9 +76,7 @@ patches:
           containers:
           - name: controller
             resources:
-              limits:
-                cpu: 100m
-                memory: 100Mi
+              $patch: delete
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
@@ -126,9 +122,7 @@ patches:
           containers:
           - name: autoscaler
             resources:
-              limits:
-                cpu: 100m
-                memory: 100Mi
+              $patch: delete
 - patch: |-
     apiVersion: v1
     kind: Service
