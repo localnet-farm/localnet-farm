@@ -147,3 +147,19 @@ patches:
       selector:
         app: envoy
       type: NodePort
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: contour-external
+      name: contour
+    spec:
+      replicas: 1
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: contour-internal
+      name: contour
+    spec:
+      replicas: 1
