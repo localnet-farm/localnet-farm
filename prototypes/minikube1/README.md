@@ -76,26 +76,13 @@ curl https://hello.v6z.me:30443/
 * https://hello.rootcache.com:30443/
 * https://hello.v6z.me:30443/
 
----
-
-### 10. Setup EFS PV
-
-```
-(cd argocd-efs-jsonnet; ./deploy.sh)
-
-
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-efs-jsonnet
-```
-
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-efs-jsonnet
-
-### 11. Demo workloads
+### 9. Demo workloads
 
 ```
 (cd argocd-workloads; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/localnet-farm-5-workloads
+open https://argocd.infra.hex.camp/applications/minikube1-workloads
 ```
 
-* https://argocd.infra.hex.camp/applications/localnet-farm-5-workloads
+* https://argocd.infra.hex.camp/applications/minikube1-workloads
 ```
