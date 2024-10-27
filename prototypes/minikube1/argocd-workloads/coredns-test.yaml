@@ -34,6 +34,7 @@ metadata:
   name: coredns-test
   namespace: default
 spec:
+  hostNetwork: true
   containers:
   - name: app
     image: coredns/coredns
@@ -42,6 +43,14 @@ spec:
     volumeMounts:
     - name: persistent-storage
       mountPath: /data
+    resources:
+      limits:
+        cpu: "1Mi"
+        memory: "10m"
+    ports:
+    - hostPort: 53
+      containerPort: 53
+      protocol: "UDP"
   volumes:
   - name: persistent-storage
     persistentVolumeClaim:
