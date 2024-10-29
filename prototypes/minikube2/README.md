@@ -1,4 +1,4 @@
-# minikube1
+# minikube2
 
 ## Steps
 
@@ -15,9 +15,9 @@
 ```
 argocd login argocd.infra.hex.camp
 
-argocd cluster rm minikube1
+argocd cluster rm minikube2
 
-argocd cluster add minikube1 -y
+argocd cluster add minikube2 -y
 ```
 
 ### 4. Set up Knative
@@ -43,27 +43,27 @@ curl http://hello.v6z.me:30080/
 ```
 (cd argocd-aws-secrets; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/minikube1-aws-secrets-route53
+open https://argocd.infra.hex.camp/applications/minikube2-aws-secrets-route53
 ```
 
-* https://argocd.infra.hex.camp/applications/minikube1-aws-secrets-route53
+* https://argocd.infra.hex.camp/applications/minikube2-aws-secrets-route53
 
 ### 7. Add cert-manager
 
 ```
 (cd argocd-cert-manager; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/minikube1-cert-manager
+open https://argocd.infra.hex.camp/applications/minikube2-cert-manager
 ```
 
-* https://argocd.infra.hex.camp/applications/minikube1-cert-manager
+* https://argocd.infra.hex.camp/applications/minikube2-cert-manager
 
 ### 8. Test SSL apps
 
 ```
 (cd argocd-hello-rootcache; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/minikube1-hello-rootcache
+open https://argocd.infra.hex.camp/applications/minikube2-hello-rootcache
 
 kn domain list
 
@@ -72,7 +72,7 @@ curl https://hello.rootcache.com:30443/
 curl https://hello.v6z.me:30443/
 ```
 
-* https://argocd.infra.hex.camp/applications/minikube1-hello-rootcache
+* https://argocd.infra.hex.camp/applications/minikube2-hello-rootcache
 * https://hello.rootcache.com:30443/
 * https://hello.v6z.me:30443/
 
@@ -81,7 +81,7 @@ curl https://hello.v6z.me:30443/
 ```
 (cd argocd-workloads; ./deploy.sh)
 
-open https://argocd.infra.hex.camp/applications/minikube1-workloads
+open https://argocd.infra.hex.camp/applications/minikube2-workloads
 ```
 
-* https://argocd.infra.hex.camp/applications/minikube1-workloads
+* https://argocd.infra.hex.camp/applications/minikube2-workloads
