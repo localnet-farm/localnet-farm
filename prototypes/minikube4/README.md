@@ -66,6 +66,10 @@ open https://argocd.infra.hex.camp/applications/minikube4-cert-manager
 
 * https://argocd.infra.hex.camp/applications/minikube4-cert-manager
 
+```
+argocd app sync minikube4-cert-manager
+```
+
 ### 8. Test SSL apps
 
 ```
