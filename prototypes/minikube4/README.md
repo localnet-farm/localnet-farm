@@ -77,6 +77,8 @@ argocd app sync minikube4-cert-manager
 
 open https://argocd.infra.hex.camp/applications/minikube4-hello-rootcache
 
+argocd app sync minikube4-hello-rootcache
+
 kn domain list
 
 curl https://hello.rootcache.com:30443/
