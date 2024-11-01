@@ -11,8 +11,7 @@ patches:
     metadata:
       namespace: knative-serving
       name: config-domain
-    data:
-      minikube3.localnet.farm: ""
+    $patch: delete
 - patch: |-
     apiVersion: v1
     kind: ConfigMap
