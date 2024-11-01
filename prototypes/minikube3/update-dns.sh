@@ -1,5 +1,6 @@
 #! /bin/bash
 
+CLUSTER=$(pwd | sed 's,^.*\/,,')
 IP=$(./get-ip.sh)
 
 echo IP: $IP
@@ -14,7 +15,7 @@ JSON="$(cat <<EOF
         {
           "Action": "UPSERT",
           "ResourceRecordSet": {
-            "Name": "minikube2.localnet.farm",
+            "Name": "$CLUSTER.localnet.farm",
             "Type": "A",
             "TTL": 30,
             "ResourceRecords": [
