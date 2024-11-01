@@ -17,5 +17,5 @@ argocd app create $CLUSTER-knative-dns \
   --path prototypes/$CLUSTER/argocd-knative-dns \
   --dest-name $CLUSTER \
   --dest-namespace default \
-  --jsonnet-tla-str cluster=$CLUSTER
+  --jsonnet-tla-str hostname="$CLUSTER.localnet.farm"
 

@@ -14,7 +14,6 @@ function (
           "app.kubernetes.io/version": "1.12.1"
         }
 	    },
-	    "type": "Opaque",
 	    "data": {
         hostname: ""
 	    }

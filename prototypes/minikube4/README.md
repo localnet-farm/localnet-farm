@@ -23,6 +23,14 @@ argocd cluster add minikube4 -y
 ### 4. Set up Knative
 
 ```
+(cd argocd-knative-dns; ./deploy.sh)
+
+open https://argocd.infra.hex.camp/applications/minikube4-knative-dns
+```
+
+* https://argocd.infra.hex.camp/applications/minikube4-knative-dns
+
+```
 (cd argocd-knative; ./deploy.sh)
 
 open https://argocd.infra.hex.camp/applications/minikube4-knative
