@@ -15,7 +15,7 @@ function (
         }
 	    },
 	    "data": {
-        hostname: ""
+        [hostname]: ""
 	    }
 	}
 ] 
