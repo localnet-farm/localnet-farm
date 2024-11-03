@@ -99,3 +99,18 @@ open https://argocd.infra.hex.camp/applications/minikube4-workloads
 ```
 
 * https://argocd.infra.hex.camp/applications/minikube4-workloads
+
+/home/centos/storage/coredns-test/Corefile: (change perms to centos)
+
+```
+. {
+	whoami
+	chaos
+}
+```
+
+```
+dig @minikube4.localnet.farm CH version.bind TXT
+
+dig @minikube4.localnet.farm a whoami.example.org
+```
