@@ -39,7 +39,8 @@ spec:
   - name: app
     image: ghcr.io/hexcamp/hexcamp-coredns-with-dnsredir-image@sha256:5bb1a2926c4bb183e8e02d6094da943c791d998439f4555a25a754af40615fe5
     command: ["/coredns"]
-    args: ["-conf", "/data/Corefile"]
+    workingDir: "/data"
+    #args: ["-conf", "/data/Corefile"]
     #args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
     volumeMounts:
     - name: persistent-storage
