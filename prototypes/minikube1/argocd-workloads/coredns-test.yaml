@@ -37,7 +37,7 @@ spec:
   hostNetwork: true
   containers:
   - name: app
-    image: ghcr.io/hexcamp/hexcamp-coredns-with-dnsredir-image@sha256:5bb1a2926c4bb183e8e02d6094da943c791d998439f4555a25a754af40615fe5
+    image: ghcr.io/hexcamp/hexcamp-coredns-with-dnsredir-image@sha256:c6b5801c4468f0bfe94f2ce25e8941ba69f0f202f7cc1560230c5730c80e31d1
     command: ["/coredns"]
     workingDir: "/data"
     #args: ["-conf", "/data/Corefile"]
