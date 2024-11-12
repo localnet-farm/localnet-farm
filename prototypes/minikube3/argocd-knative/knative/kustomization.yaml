@@ -170,7 +170,7 @@ patches:
       namespace: knative-serving
       name: activator
     spec:
-      replicas: 1
+      replicas: 2
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
@@ -178,4 +178,4 @@ patches:
       namespace: knative-serving
       name: webhook
     spec:
-      replicas: 1
+      replicas: 2
