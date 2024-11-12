@@ -163,3 +163,19 @@ patches:
       name: contour
     spec:
       replicas: 1
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: activator
+    spec:
+      replicas: 1
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: webhook
+    spec:
+      replicas: 1
