@@ -100,7 +100,7 @@ open https://argocd.infra.hex.camp/applications/minikube5-workloads
 
 * https://argocd.infra.hex.camp/applications/minikube5-workloads
 
-/home/centos/storage/coredns-test/Corefile: (change perms to centos)
+/home/ubuntu/storage/coredns-test/Corefile: (change perms to ubuntu)
 
 ```
 . {
