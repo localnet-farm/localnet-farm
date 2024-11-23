@@ -13,7 +13,6 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/home/ubuntu/storage/coredns-test"
-  persistentVolumeReclaimPolicy: Delete
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

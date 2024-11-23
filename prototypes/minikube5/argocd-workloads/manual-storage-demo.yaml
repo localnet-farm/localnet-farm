@@ -13,7 +13,6 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/home/ubuntu/storage/manual-storage-demo"
-  persistentVolumeReclaimPolicy: Delete
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
