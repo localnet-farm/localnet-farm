@@ -25,6 +25,8 @@ argocd cluster add minikube5 -y
 ```
 (cd argocd-knative-dns; ./deploy.sh)
 
+argocd app sync minikube5-knative-dns
+
 open https://argocd.infra.hex.camp/applications/minikube5-knative-dns
 ```
 
@@ -32,6 +34,8 @@ open https://argocd.infra.hex.camp/applications/minikube5-knative-dns
 
 ```
 (cd argocd-knative; ./deploy.sh)
+
+argocd app sync minikube5-knative
 
 open https://argocd.infra.hex.camp/applications/minikube5-knative
 ```
@@ -51,6 +55,8 @@ curl http://hello.v6z.me:30080/
 ```
 (cd argocd-aws-secrets; ./deploy.sh)
 
+argocd app sync minikube5-aws-secrets-route53
+
 open https://argocd.infra.hex.camp/applications/minikube5-aws-secrets-route53
 ```
 
@@ -61,23 +67,22 @@ open https://argocd.infra.hex.camp/applications/minikube5-aws-secrets-route53
 ```
 (cd argocd-cert-manager; ./deploy.sh)
 
+argocd app sync minikube5-cert-manager
+
 open https://argocd.infra.hex.camp/applications/minikube5-cert-manager
 ```
 
 * https://argocd.infra.hex.camp/applications/minikube5-cert-manager
-
-```
-argocd app sync minikube5-cert-manager
-```
 
 ### 8. Test SSL apps
 
 ```
 (cd argocd-hello-rootcache; ./deploy.sh)
 
+argocd app sync minikube5-hello-rootcache
+
 open https://argocd.infra.hex.camp/applications/minikube5-hello-rootcache
 
-argocd app sync minikube5-hello-rootcache
 
 kn domain list
 
