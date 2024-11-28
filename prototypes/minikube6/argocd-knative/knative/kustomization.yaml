@@ -162,3 +162,70 @@ patches:
       name: contour
     spec:
       replicas: 1
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-external
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: envoy
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-external
+      name: envoy
+    spec:
+      template:
+        spec:
+          jim2: true
+          containers:
+          - name: shutdown-manager
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-internal
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: envoy
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-internal
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: shutdown-manager
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: net-contour-controller
+    spec:
+      template:
+        spec:
+          jim3: true
+          containers:
+          - name: controller
+            resources:
+              $patch: delete
