@@ -184,7 +184,6 @@ patches:
     spec:
       template:
         spec:
-          jim2: true
           containers:
           - name: shutdown-manager
             resources:
@@ -224,7 +223,6 @@ patches:
     spec:
       template:
         spec:
-          jim3: true
           containers:
           - name: controller
             resources:
