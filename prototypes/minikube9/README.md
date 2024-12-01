@@ -121,6 +121,8 @@ mkdir -p storage/coredns-data
 ```
 (cd argocd-workloads; ./deploy.sh)
 
+argocd app sync minikube9-workloads
+
 open https://argocd.infra.hex.camp/applications/minikube9-workloads
 ```
 
