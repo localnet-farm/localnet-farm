@@ -42,7 +42,7 @@ open https://argocd.infra.hex.camp/applications/minikube9-knative
 
 * https://argocd.infra.hex.camp/applications/minikube9-knative
 
-### 5. Test Knative
+### 5. Test Knative (Skip)
 
 ```
 (cd test-knative; ./test.sh)
@@ -69,12 +69,16 @@ open https://argocd.infra.hex.camp/applications/minikube9-aws-secrets-route53
 
 argocd app sync minikube9-cert-manager
 
+# Need to run a second time
+
+argocd app sync minikube9-cert-manager
+
 open https://argocd.infra.hex.camp/applications/minikube9-cert-manager
 ```
 
 * https://argocd.infra.hex.camp/applications/minikube9-cert-manager
 
-### 8. Test SSL apps
+### (Skip) 8. Test SSL apps
 
 ```
 (cd argocd-hello-rootcache; ./deploy.sh)
@@ -97,6 +101,23 @@ curl https://hello.v6z.me:30443/
 
 ### 9. Demo workloads
 
+/home/ubuntu/storage/coredns-test/Corefile: (change perms to ubuntu)
+
+```
+mkdir -p storage/coredns-test
+cat <<EOT > storage/coredns-test/Corefile
+. {
+	whoami
+	chaos
+  reload
+  log
+  errors
+  debug
+}
+EOT
+mkdir -p storage/coredns-data
+```
+
 ```
 (cd argocd-workloads; ./deploy.sh)
 
@@ -105,14 +126,6 @@ open https://argocd.infra.hex.camp/applications/minikube9-workloads
 
 * https://argocd.infra.hex.camp/applications/minikube9-workloads
 
-/home/ubuntu/storage/coredns-test/Corefile: (change perms to ubuntu)
-
-```
-. {
-	whoami
-	chaos
-}
-```
 
 ```
 dig @minikube9.localnet.farm CH version.bind TXT
