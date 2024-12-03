@@ -10,6 +10,13 @@ patches:
     kind: ConfigMap
     metadata:
       namespace: knative-serving
+      name: config-domain
+    $patch: delete
+- patch: |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      namespace: knative-serving
       name: config-features
     data:
       kubernetes.podspec-affinity: enabled
