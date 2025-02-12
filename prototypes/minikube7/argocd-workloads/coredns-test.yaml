@@ -56,5 +56,3 @@ spec:
   - name: persistent-storage
     persistentVolumeClaim:
       claimName: coredns-test
-    serviceAccount: coredns
-    serviceAccountName: coredns
