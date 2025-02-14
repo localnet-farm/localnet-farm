@@ -49,6 +49,9 @@ spec:
     - hostPort: 53
       containerPort: 53
       protocol: "UDP"
+    - hostPort: 9153
+      containerPort: 9153
+      protocol: "TCP"
   volumes:
   - name: persistent-storage
     persistentVolumeClaim:
