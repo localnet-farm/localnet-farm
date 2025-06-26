@@ -122,4 +122,10 @@ open https://argocd.infra.hex.camp/applications/minikube10-workloads
 dig @minikube10.localnet.farm CH version.bind TXT
 
 dig @minikube10.localnet.farm a whoami.example.org
+
 ```
+
+### 10. local-path-provisioner
+
+### 11. hierarchical-namespaces
+
