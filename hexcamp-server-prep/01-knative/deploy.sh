@@ -1,8 +1,12 @@
 #! /bin/bash
 
-. ../../../.env
+. ../../.env
 
-CLUSTER=$(cd ..; pwd | sed 's,^.*\/,,')
+CLUSTER=$1
+if [ -z "$CLUSTER" ]; then
+  echo Need cluster
+  exit 1
+fi
 
 echo GITHUB_PAT $GITHUB_PAT
 
@@ -11,6 +15,6 @@ argocd repo add https://github.com/jimpick/localnet-farm.git --username jimpick 
 argocd app create $CLUSTER-knative \
   --upsert \
   --repo https://github.com/jimpick/localnet-farm.git \
-  --path prototypes/$CLUSTER/argocd-knative \
+  --path hexcamp-server-prep/01-knative \
   --dest-name $CLUSTER \
   --dest-namespace default
