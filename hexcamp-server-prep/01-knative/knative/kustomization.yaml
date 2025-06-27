@@ -1,0 +1,189 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- github.com/knative/serving/releases/download/knative-v1.12.1/serving-core.yaml
+- github.com/knative/net-contour/releases/download/knative-v1.12.1/contour.yaml
+- github.com/knative/net-contour/releases/download/knative-v1.12.1/net-contour.yaml
+patches:
+- patch: |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      namespace: knative-serving
+      name: config-domain
+    $patch: delete
+- patch: |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      namespace: knative-serving
+      name: config-features
+    data:
+      kubernetes.podspec-persistent-volume-claim: enabled
+      kubernetes.podspec-persistent-volume-write: enabled
+- patch: |-
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      namespace: knative-serving
+      name: config-network
+    data:
+      autocreate-cluster-domain-claims: "true"
+      ingress.class: contour.ingress.networking.knative.dev
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: activator
+    spec:
+      template:
+        spec:
+          containers:
+          - name: activator
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: controller
+    spec:
+      template:
+        spec:
+          containers:
+          - name: controller
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: webhook
+    spec:
+      template:
+        spec:
+          containers:
+          - name: webhook
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: autoscaler
+    spec:
+      template:
+        spec:
+          containers:
+          - name: autoscaler
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      namespace: contour-external
+      name: envoy
+      labels:
+        networking.knative.dev/ingress-provider: contour
+    spec:
+      externalTrafficPolicy: Local
+      ports:
+        - port: 80
+          nodePort: 30080
+          name: http
+          protocol: TCP
+          targetPort: 8080
+        - port: 443
+          nodePort: 30443
+          name: https
+          protocol: TCP
+          targetPort: 8443
+      selector:
+        app: envoy
+      type: NodePort
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: contour-external
+      name: contour
+    spec:
+      replicas: 1
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: contour-internal
+      name: contour
+    spec:
+      replicas: 1
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-external
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: envoy
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-external
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: shutdown-manager
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-internal
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: envoy
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      namespace: contour-internal
+      name: envoy
+    spec:
+      template:
+        spec:
+          containers:
+          - name: shutdown-manager
+            resources:
+              $patch: delete
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: knative-serving
+      name: net-contour-controller
+    spec:
+      template:
+        spec:
+          containers:
+          - name: controller
+            resources:
+              $patch: delete

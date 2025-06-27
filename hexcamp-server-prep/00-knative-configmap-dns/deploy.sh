@@ -17,7 +17,7 @@ kubectl --context $CLUSTER create ns knative-serving
 argocd app create $CLUSTER-knative-dns \
   --upsert \
   --repo https://github.com/jimpick/localnet-farm.git \
-  --path hexcamp-server-prep/00-argocd-knative-dns \
+  --path hexcamp-server-prep/00-knative-configmap-dns \
   --dest-name $CLUSTER \
   --dest-namespace default \
   --jsonnet-tla-str hostname="$CLUSTER.localnet.farm"
