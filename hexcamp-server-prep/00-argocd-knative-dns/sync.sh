@@ -1,8 +1,5 @@
 #! /bin/bash
 
-. ../../../.env
-. .env
-
 CLUSTER=$1
 if [ -z "$CLUSTER" ]; then
   echo Need cluster
