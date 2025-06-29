@@ -6,5 +6,5 @@ if [ -z "$CLUSTER" ]; then
   exit 1
 fi
 
-argocd app sync $CLUSTER-hierarchical-namespaces
+argocd app sync $CLUSTER-reflector
 

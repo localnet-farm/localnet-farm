@@ -1,0 +1,134 @@
+---
+# Source: reflector/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: reflector
+  namespace: kube-system
+  labels:
+    helm.sh/chart: reflector-9.1.14
+    app.kubernetes.io/name: reflector
+    app.kubernetes.io/instance: reflector
+    app.kubernetes.io/version: "9.1.14"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: reflector/templates/clusterRole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: reflector
+  namespace: kube-system
+  labels:
+    helm.sh/chart: reflector-9.1.14
+    app.kubernetes.io/name: reflector
+    app.kubernetes.io/instance: reflector
+    app.kubernetes.io/version: "9.1.14"
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["watch", "list"]
+---
+# Source: reflector/templates/clusterRoleBinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: reflector
+  namespace: kube-system
+  labels:
+    helm.sh/chart: reflector-9.1.14
+    app.kubernetes.io/name: reflector
+    app.kubernetes.io/instance: reflector
+    app.kubernetes.io/version: "9.1.14"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  kind: ClusterRole
+  name: reflector
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: reflector
+    namespace: kube-system
+---
+# Source: reflector/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reflector
+  namespace: kube-system
+  labels:
+    helm.sh/chart: reflector-9.1.14
+    app.kubernetes.io/name: reflector
+    app.kubernetes.io/instance: reflector
+    app.kubernetes.io/version: "9.1.14"
+    app.kubernetes.io/managed-by: Helm
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: reflector
+      app.kubernetes.io/instance: reflector
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: reflector
+        app.kubernetes.io/instance: reflector
+
+    spec:
+      serviceAccountName: reflector
+      securityContext:
+        fsGroup: 2000
+      containers:
+        - name: reflector
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: "docker.io/emberstack/kubernetes-reflector:9.1.14"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ES_Serilog__MinimumLevel__Default
+              value: "Information"
+            - name: ES_Reflector__Watcher__Timeout
+              value: ""
+            - name: ES_Ignite__KubernetesClient__SkipTlsVerify
+              value: "false"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /health/live
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
+          startupProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
+          resources:
+            {}
+          volumeMounts:
+            []
